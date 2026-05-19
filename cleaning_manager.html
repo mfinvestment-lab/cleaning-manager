@@ -8,67 +8,75 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans JP',sans-serif;background:#fff;height:100vh;display:flex;flex-direction:column;overflow:hidden;font-size:13px;color:#333}
-.hdr{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid #e0e0e0;background:#fff;flex-shrink:0}
-.hdr-title{font-size:15px;font-weight:600;margin-right:4px}
-.nav{width:26px;height:26px;border:1px solid #ddd;border-radius:50%;background:#fff;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:#555}
+.hdr{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid #e0e0e0;background:#fff;flex-shrink:0}
+.hdr-title{font-size:14px;font-weight:600}
+.nav{width:24px;height:24px;border:1px solid #ddd;border-radius:50%;background:#fff;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;color:#555}
 .nav:hover{background:#f5f5f5}
-.mth{font-size:15px;font-weight:500;min-width:90px}
-.btn-today{padding:4px 12px;border:1px solid #ddd;border-radius:16px;background:#fff;font-size:12px;cursor:pointer;font-family:inherit}
-.btn-today:hover{background:#f5f5f5}
-.btn-sync{padding:4px 12px;border:1px solid #ddd;border-radius:16px;background:#fff;font-size:12px;cursor:pointer;font-family:inherit;margin-left:auto}
-.sync-st{font-size:11px;color:#aaa}
+.mth{font-size:14px;font-weight:500;min-width:88px}
+.hbtn{padding:4px 12px;border:1px solid #ddd;border-radius:14px;background:#fff;font-size:11px;cursor:pointer;font-family:inherit;color:#555}
+.hbtn:hover{background:#f5f5f5}
+.hbtn.primary{background:#1a73e8;color:#fff;border-color:#1a73e8}
+.ml{margin-left:auto}
+.sst{font-size:11px;color:#aaa}
+.spin{display:inline-block;width:10px;height:10px;border:2px solid #ddd;border-top-color:#1a73e8;border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle}
+@keyframes sp{to{transform:rotate(360deg)}}
 .cal{flex:1;overflow-y:auto;display:flex;flex-direction:column}
-.dow-row{display:grid;grid-template-columns:repeat(7,1fr);position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #e0e0e0}
-.dow{text-align:center;padding:6px 0;font-size:11px;font-weight:500;color:#777}
-.dow:nth-child(1){color:#d32f2f}
+.dow-row{display:grid;grid-template-columns:repeat(7,1fr);position:sticky;top:0;z-index:5;background:#fff;border-bottom:2px solid #e0e0e0}
+.dow{text-align:center;padding:5px 0;font-size:11px;font-weight:600;color:#888}
+.dow:nth-child(1){color:#c62828}
 .dow:nth-child(7){color:#1565c0}
-.week{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid #e8e8e8;flex-shrink:0}
-.day{border-right:1px solid #e8e8e8;padding:2px;min-height:85px;cursor:pointer}
+.week{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid #ebebeb;flex-shrink:0;min-height:88px}
+.day{border-right:1px solid #ebebeb;padding:2px;overflow:hidden;cursor:pointer}
 .day:last-child{border-right:none}
 .day:hover{background:#fafafa}
-.dnum{font-size:11px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:50%;margin:1px;color:#555}
-.dnum.today{background:#1a73e8;color:#fff;font-weight:600}
-.dnum.sun{color:#d32f2f}
+.dnum-wrap{display:flex;align-items:center;justify-content:center;padding:2px 0}
+.dnum{font-size:11px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:50%;color:#555;font-weight:500}
+.dnum.today{background:#1a73e8;color:#fff}
+.dnum.sun{color:#c62828}
 .dnum.sat{color:#1565c0}
-.dnum.other{color:#ccc}
-.evs{display:flex;flex-direction:column;gap:1px;margin-top:1px}
-.ev{font-size:10px;padding:1px 5px;border-radius:3px;line-height:1.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;font-weight:500}
-.ev:hover{filter:brightness(.93)}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:40;display:none}
+.dnum.other{color:#ccc;font-weight:400}
+.evs{display:flex;flex-direction:column;gap:1px}
+.ev-stay{font-size:10px;padding:1px 4px;line-height:1.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;border-radius:2px;font-weight:400}
+.ev-checkout{font-size:10px;padding:1px 4px;line-height:1.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;border-radius:2px;font-weight:600;color:#fff}
+.ev-samein{font-size:10px;padding:1px 4px;line-height:1.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;border-radius:2px;font-weight:500}
+.ev-spot{font-size:10px;padding:1px 4px;line-height:1.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;border-radius:2px;font-weight:500;background:#f3e5f5;color:#6a1b9a}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:40;display:none}
 .overlay.on{display:block}
-.panel{position:fixed;right:0;top:0;bottom:0;width:300px;background:#fff;border-left:1px solid #e0e0e0;z-index:41;transform:translateX(100%);transition:transform .18s;display:flex;flex-direction:column}
+.panel{position:fixed;right:0;top:0;bottom:0;width:290px;background:#fff;border-left:1px solid #e0e0e0;z-index:41;transform:translateX(100%);transition:transform .15s ease;display:flex;flex-direction:column}
 .panel.on{transform:translateX(0)}
-.pnl-hdr{padding:12px 14px;border-bottom:1px solid #e0e0e0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.pnl-title{font-size:14px;font-weight:600}
-.pnl-close{width:26px;height:26px;border:none;background:none;cursor:pointer;border-radius:50%;font-size:18px;color:#888;display:flex;align-items:center;justify-content:center}
+.pnl-hdr{padding:11px 14px;border-bottom:1px solid #e0e0e0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.pnl-ttl{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+.pnl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.pnl-close{width:24px;height:24px;border:none;background:none;cursor:pointer;border-radius:50%;font-size:16px;color:#888;line-height:1}
 .pnl-close:hover{background:#f0f0f0}
-.pnl-body{padding:14px;overflow-y:auto;flex:1}
-.prow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0f0f0;font-size:13px}
+.pnl-body{padding:12px 14px;overflow-y:auto;flex:1}
+.prow{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0;font-size:12px}
 .prow:last-child{border-bottom:none}
-.pk{color:#888}
-.pv{font-weight:500;color:#333}
-.cl-wrap{margin-top:12px}
-.cl-title{font-size:11px;font-weight:600;color:#aaa;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
-.cl-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f5f5f5;cursor:pointer}
+.pk{color:#999}
+.pv{font-weight:500;color:#333;text-align:right}
+.sec-ttl{font-size:10px;font-weight:600;color:#bbb;text-transform:uppercase;letter-spacing:.05em;margin:12px 0 6px}
+.cl-item{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #f5f5f5;cursor:pointer}
 .cl-item:last-child{border-bottom:none}
-.cl-box{width:17px;height:17px;border-radius:3px;border:1.5px solid #ddd;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px}
+.cl-box{width:16px;height:16px;border-radius:3px;border:1.5px solid #ddd;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;color:#fff}
 .cl-text{font-size:12px;color:#333;flex:1}
 .cl-text.done{text-decoration:line-through;color:#bbb}
-.btn-done{width:100%;padding:8px;background:#43a047;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;margin-top:12px;font-family:inherit}
-.done-tag{background:#e8f5e9;color:#2e7d32;border-radius:6px;padding:8px;text-align:center;font-size:12px;font-weight:500;margin-top:12px}
-.moverlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:60;display:none;align-items:center;justify-content:center}
+.btn-done{width:100%;padding:7px;background:#388e3c;color:#fff;border:none;border-radius:5px;font-size:12px;cursor:pointer;margin-top:10px;font-family:inherit}
+.done-tag{background:#e8f5e9;color:#2e7d32;border-radius:5px;padding:7px;text-align:center;font-size:11px;font-weight:500;margin-top:10px}
+.moverlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:60;display:none;align-items:center;justify-content:center}
 .moverlay.on{display:flex}
-.modal{background:#fff;border-radius:10px;padding:18px;width:360px;box-shadow:0 6px 24px rgba(0,0,0,.15)}
+.modal{background:#fff;border-radius:10px;padding:18px;width:340px;box-shadow:0 8px 28px rgba(0,0,0,.18)}
 .modal h3{font-size:14px;font-weight:600;margin-bottom:12px}
-.fg{margin-bottom:9px}
+.fg{margin-bottom:8px}
 .fg label{font-size:11px;color:#888;display:block;margin-bottom:3px}
-.fg input,.fg select{width:100%;padding:7px 9px;border:1px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit}
+.fg input,.fg select,.fg textarea{width:100%;padding:6px 8px;border:1px solid #ddd;border-radius:5px;font-size:12px;font-family:inherit;color:#333}
+.fg textarea{resize:vertical;min-height:56px}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .macts{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
-.btn-cancel{padding:7px 14px;border:1px solid #ddd;border-radius:6px;background:#fff;font-size:13px;cursor:pointer;font-family:inherit}
-.btn-save{padding:7px 14px;background:#1a73e8;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit}
-.spin{display:inline-block;width:11px;height:11px;border:2px solid #ddd;border-top-color:#1a73e8;border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle}
-@keyframes sp{to{transform:rotate(360deg)}}
+.btn-c{padding:6px 14px;border:1px solid #ddd;border-radius:5px;background:#fff;font-size:12px;cursor:pointer;font-family:inherit}
+.btn-s{padding:6px 14px;background:#1a73e8;color:#fff;border:none;border-radius:5px;font-size:12px;cursor:pointer;font-family:inherit}
+.tab-row{display:flex;gap:0;margin-bottom:12px;border-bottom:1px solid #eee}
+.tab{padding:6px 14px;font-size:12px;cursor:pointer;border-bottom:2px solid transparent;color:#888;font-family:inherit;background:none;border-left:none;border-right:none;border-top:none}
+.tab.active{color:#1a73e8;border-bottom-color:#1a73e8;font-weight:500}
 </style>
 </head>
 <body>
@@ -77,10 +85,11 @@ body{font-family:'Noto Sans JP',sans-serif;background:#fff;height:100vh;display:
   <button class="nav" onclick="cm(-1)">‹</button>
   <button class="nav" onclick="cm(1)">›</button>
   <span class="mth" id="mth"></span>
-  <button class="btn-today" onclick="goToday()">今日</button>
-  <span class="sync-st" id="sst"></span>
-  <button class="btn-sync" id="sbtn" onclick="sync(false)">🔄 同期</button>
-  <button class="btn-today" onclick="openAdd()" style="background:#1a73e8;color:#fff;border-color:#1a73e8">＋ 予約</button>
+  <button class="hbtn" onclick="goToday()">今日</button>
+  <span class="sst" id="sst"></span>
+  <button class="hbtn ml" id="sbtn" onclick="sync(false)">🔄 同期</button>
+  <button class="hbtn primary" onclick="openAdd('booking')">＋ 予約</button>
+  <button class="hbtn" onclick="openAdd('spot')" style="background:#f3e5f5;color:#6a1b9a;border-color:#ce93d8">＋ スポット</button>
 </div>
 <div class="cal">
   <div class="dow-row">
@@ -92,139 +101,195 @@ body{font-family:'Noto Sans JP',sans-serif;background:#fff;height:100vh;display:
 <div class="overlay" id="ov" onclick="closePanel()"></div>
 <div class="panel" id="pnl">
   <div class="pnl-hdr">
-    <div class="pnl-title" id="ptitle"></div>
+    <div class="pnl-ttl"><div class="pnl-dot" id="pdot"></div><span id="ptitle"></span></div>
     <button class="pnl-close" onclick="closePanel()">×</button>
   </div>
   <div class="pnl-body" id="pbody"></div>
 </div>
 <div class="moverlay" id="madd">
 <div class="modal">
-  <h3>予約登録</h3>
-  <div class="fg"><label>物件</label><select id="ap"></select></div>
-  <div class="frow">
-    <div class="fg"><label>チェックイン</label><input type="date" id="ai"></div>
-    <div class="fg"><label>チェックアウト</label><input type="date" id="ao"></div>
+  <div class="tab-row">
+    <button class="tab active" id="tab-booking" onclick="switchTab('booking')">予約登録</button>
+    <button class="tab" id="tab-spot" onclick="switchTab('spot')">スポット登録</button>
   </div>
-  <div class="fg"><label>宿泊者名</label><input type="text" id="ag" placeholder="山田 太郎"></div>
-  <div class="fg"><label>メモ</label><input type="text" id="an" placeholder="ペット可など"></div>
+  <div id="form-booking">
+    <div class="fg"><label>物件</label><select id="ap"></select></div>
+    <div class="frow">
+      <div class="fg"><label>チェックイン</label><input type="date" id="ai"></div>
+      <div class="fg"><label>チェックアウト</label><input type="date" id="ao"></div>
+    </div>
+    <div class="fg"><label>宿泊者名</label><input type="text" id="ag" placeholder="山田 太郎"></div>
+    <div class="fg"><label>メモ</label><input type="text" id="an" placeholder="ペット可など"></div>
+  </div>
+  <div id="form-spot" style="display:none">
+    <div class="fg"><label>タイトル</label><input type="text" id="sp-title" placeholder="スポット清掃・点検など"></div>
+    <div class="frow">
+      <div class="fg"><label>日付</label><input type="date" id="sp-date"></div>
+      <div class="fg"><label>物件（任意）</label><select id="sp-prop"></select></div>
+    </div>
+    <div class="fg"><label>メモ</label><textarea id="sp-note" placeholder="詳細など"></textarea></div>
+  </div>
   <div class="macts">
-    <button class="btn-cancel" onclick="closeAdd()">キャンセル</button>
-    <button class="btn-save" onclick="addB()">登録</button>
+    <button class="btn-c" onclick="closeAdd()">キャンセル</button>
+    <button class="btn-s" onclick="addEntry()">登録</button>
   </div>
 </div>
 </div>
 <script>
 const URLS={'nel.shizuoka':'https://calendar.google.com/calendar/ical/b7c977bab349c38525963f73eb023db41e3df06492384122f85660b2ec030a9d%40group.calendar.google.com/private-3fdd6e18cf76815616b6d26ef78a1383/basic.ics','SAKURA HAUS':'https://calendar.google.com/calendar/ical/d4176b763462e0fbf40ac8e1d2d714dfbfc210936c73b8a4c9528126585d5ab6%40group.calendar.google.com/private-0f6ee0f56a6609ce4babd78a2c20c7b1/basic.ics','SAKUYA':'https://calendar.google.com/calendar/ical/ab28b96b37415ef5bd0e475e90c30e56b7a1e47d255cb44859dd212e69e5f4bb%40group.calendar.google.com/private-8ff64fcbce95425a735341748788eadb/basic.ics'};
-const COL={'nel.shizuoka':'#2e7d32','SAKURA HAUS':'#c2185b','SAKUYA':'#f57c00'};
+const DARK={'nel.shizuoka':'#1b5e20','SAKURA HAUS':'#880e4f','SAKUYA':'#e65100'};
+const LIGHT={'nel.shizuoka':'rgba(46,125,50,.18)','SAKURA HAUS':'rgba(136,14,79,.18)','SAKUYA':'rgba(230,81,0,.18)'};
+const LTXT={'nel.shizuoka':'#2e7d32','SAKURA HAUS':'#880e4f','SAKUYA':'#bf360c'};
 const NM={'nel.shizuoka':'nel.','SAKURA HAUS':'桜ハウス','SAKUYA':'SAKUYA'};
 const CL=['寝具・タオル交換','浴室・洗面台清掃','トイレ清掃','キッチン清掃','床掃除','ゴミ捨て','アメニティ補充','冷蔵庫確認','備品チェック','鍵確認'];
 let Y=new Date().getFullYear(),M=new Date().getMonth();
 const TD=fmt(new Date());
-let selId=null;
+let selId=null,curTab='booking';
 let BK=JSON.parse(localStorage.getItem('bk')||'[]');
 let TK=JSON.parse(localStorage.getItem('tk')||'[]');
+let SP=JSON.parse(localStorage.getItem('sp')||'[]');
 function pad(n){return String(n).padStart(2,'0')}
 function fmt(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
 function addD(s,n){const d=new Date(s);d.setDate(d.getDate()+n);return fmt(d)}
-function col(k){return COL[k]||'#888'}
+function dk(k){return DARK[k]||'#555'}
+function lk(k){return LIGHT[k]||'rgba(0,0,0,.1)'}
+function lt(k){return LTXT[k]||'#333'}
 function nm(k){return NM[k]||k}
-function rgba(hex,a){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgba(${r},${g},${b},${a})`}
-function save(){localStorage.setItem('bk',JSON.stringify(BK));localStorage.setItem('tk',JSON.stringify(TK))}
+function save(){localStorage.setItem('bk',JSON.stringify(BK));localStorage.setItem('tk',JSON.stringify(TK));localStorage.setItem('sp',JSON.stringify(SP))}
 function render(){
   const MN=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
   document.getElementById('mth').textContent=Y+'年 '+MN[M];
   const fd=new Date(Y,M,1).getDay(),ld=new Date(Y,M+1,0).getDate(),prev=new Date(Y,M,0).getDate();
-  const body=document.getElementById('body');body.innerHTML='';
   const days=[];
   for(let i=fd-1;i>=0;i--)days.push({s:fmt(new Date(Y,M-1,prev-i)),o:true});
   for(let d=1;d<=ld;d++)days.push({s:fmt(new Date(Y,M,d)),o:false});
   while(days.length%7)days.push({s:addD(days[days.length-1].s,1),o:true});
+  const body=document.getElementById('body');body.innerHTML='';
   for(let w=0;w<days.length/7;w++){
     const row=document.createElement('div');row.className='week';
     for(let d=0;d<7;d++){
-      const cell=days[w*7+d];
+      const cell=days[w*7+d],ds=cell.s;
       const div=document.createElement('div');div.className='day';
+      const wrap=document.createElement('div');wrap.className='dnum-wrap';
       const dn=document.createElement('div');
       let dc='dnum';
-      if(cell.s===TD)dc+=' today';
+      if(ds===TD)dc+=' today';
       else if(cell.o)dc+=' other';
       else if(d===0)dc+=' sun';
       else if(d===6)dc+=' sat';
-      dn.className=dc;dn.textContent=parseInt(cell.s.split('-')[2]);div.appendChild(dn);
+      dn.className=dc;dn.textContent=parseInt(ds.split('-')[2]);
+      wrap.appendChild(dn);div.appendChild(wrap);
       const evs=document.createElement('div');evs.className='evs';
-      BK.forEach(b=>{
-        const c=col(b.property),n=nm(b.property),ds=cell.s;
-        if(b.checkin===ds){
-          const e=document.createElement('div');e.className='ev';
-          e.style.cssText=`background:${rgba(c,.28)};color:${c}`;
-          e.textContent=n+'　当日イン';
-          e.onclick=ev=>{ev.stopPropagation();showD(b.id)};evs.appendChild(e);
-        }
-        if(ds>b.checkin&&ds<b.checkout){
-          const e=document.createElement('div');e.className='ev';
-          e.style.cssText=`background:${rgba(c,.13)};color:${rgba(c,.7)}`;
-          e.textContent=n+'　連泊中';
-          e.onclick=ev=>{ev.stopPropagation();showD(b.id)};evs.appendChild(e);
-        }
-        if(b.checkout===ds){
-          const tk=TK.find(t=>t.bookingId===b.id),done=tk&&tk.done;
-          const e1=document.createElement('div');e1.className='ev';
-          e1.style.cssText=`background:${rgba(c,.25)};color:${c}`;
-          e1.textContent=n+'　チェックアウト';
-          e1.onclick=ev=>{ev.stopPropagation();showD(b.id)};evs.appendChild(e1);
-          const e2=document.createElement('div');e2.className='ev';
-          e2.style.cssText=done?'background:#e8f5e9;color:#2e7d32':`background:${c};color:#fff`;
-          e2.textContent=done?'✓ 清掃完了':'🧹 清掃';
-          e2.onclick=ev=>{ev.stopPropagation();showD(b.id)};evs.appendChild(e2);
+      // 滞在中バー（薄い）
+      BK.filter(b=>ds>b.checkin&&ds<b.checkout).forEach(b=>{
+        const e=document.createElement('div');e.className='ev-stay';
+        e.style.background=lk(b.property);e.style.color=lt(b.property);
+        e.textContent=nm(b.property);
+        e.onclick=ev=>{ev.stopPropagation();showD(b.id,'booking')};evs.appendChild(e);
+      });
+      // チェックアウト日（濃い）
+      BK.filter(b=>b.checkout===ds).forEach(b=>{
+        const tk=TK.find(t=>t.bookingId===b.id),done=tk&&tk.done;
+        const e=document.createElement('div');e.className='ev-checkout';
+        e.style.background=done?'#388e3c':dk(b.property);
+        e.textContent=done?'✓ '+nm(b.property):nm(b.property);
+        e.onclick=ev=>{ev.stopPropagation();showD(b.id,'booking')};evs.appendChild(e);
+        // 同物件で同日チェックインがある場合のみ「当日イン」
+        if(BK.some(b2=>b2.checkin===ds&&b2.property===b.property&&b2.id!==b.id)){
+          const e2=document.createElement('div');e2.className='ev-samein';
+          e2.style.background=lk(b.property);e2.style.color=lt(b.property);
+          e2.style.borderLeft='2px solid '+dk(b.property);
+          e2.textContent=nm(b.property)+'　当日イン';
+          e2.onclick=ev=>{ev.stopPropagation();const b2=BK.find(x=>x.checkin===ds&&x.property===b.property&&x.id!==b.id);if(b2)showD(b2.id,'booking')};evs.appendChild(e2);
         }
       });
+      // スポット
+      SP.filter(s=>s.date===ds).forEach(s=>{
+        const e=document.createElement('div');e.className='ev-spot';
+        e.textContent='📌 '+s.title;
+        e.onclick=ev=>{ev.stopPropagation();showD(s.id,'spot')};evs.appendChild(e);
+      });
       div.appendChild(evs);
-      div.onclick=()=>{const db=BK.filter(b=>b.checkin===cell.s||b.checkout===cell.s||(cell.s>b.checkin&&cell.s<b.checkout));if(db.length)showD(db[0].id)};
+      div.onclick=()=>{
+        const db=[...BK.filter(b=>b.checkin===ds||b.checkout===ds||(ds>b.checkin&&ds<b.checkout)),...SP.filter(s=>s.date===ds)];
+        if(db.length){const isSpot=SP.find(s=>s.id===db[0].id);showD(db[0].id,isSpot?'spot':'booking');}
+      };
       row.appendChild(div);
     }
     body.appendChild(row);
   }
 }
-function showD(id){
-  selId=id;
-  const b=BK.find(x=>x.id===id);if(!b)return;
-  const tk=TK.find(t=>t.bookingId===id),c=col(b.property);
-  document.getElementById('ptitle').innerHTML=`<span style="width:10px;height:10px;border-radius:50%;background:${c};display:inline-block;margin-right:6px;vertical-align:middle"></span>${nm(b.property)}`;
-  const done=tk?tk.checks.filter(x=>x.done).length:0,total=tk?tk.checks.length:0;
-  let h=`<div class="prow"><span class="pk">宿泊者</span><span class="pv">${b.guest||'未登録'}</span></div>
-    <div class="prow"><span class="pk">チェックイン</span><span class="pv">${b.checkin}</span></div>
-    <div class="prow"><span class="pk">チェックアウト</span><span class="pv">${b.checkout}</span></div>
-    ${b.note?`<div class="prow"><span class="pk">メモ</span><span class="pv">${b.note}</span></div>`:''}
-    ${b.source==='gcal'?'<div style="margin-top:6px"><span style="font-size:10px;background:#e8f0fe;color:#1a73e8;padding:2px 8px;border-radius:20px">📅 Googleカレンダー</span></div>':''}`;
-  if(tk){h+=`<div class="cl-wrap"><div class="cl-title">清掃チェックリスト（${done}/${total}）</div>
-    ${tk.checks.map((c,i)=>`<div class="cl-item" onclick="togCk(${id},${i})">
-      <div class="cl-box" style="${c.done?'background:'+col(b.property)+';border-color:'+col(b.property)+';color:#fff':''}">${c.done?'✓':''}</div>
-      <span class="cl-text ${c.done?'done':''}">${c.text}</span>
-    </div>`).join('')}
-    ${tk.done?'<div class="done-tag">✓ 清掃完了済み</div>':`<button class="btn-done" onclick="allDone(${id})">清掃完了にする</button>`}
-  </div>`;}
-  document.getElementById('pbody').innerHTML=h;
+function showD(id,type){
+  selId={id,type};
+  if(type==='booking'){
+    const b=BK.find(x=>x.id===id);if(!b)return;
+    const tk=TK.find(t=>t.bookingId===id);
+    document.getElementById('pdot').style.background=dk(b.property);
+    document.getElementById('ptitle').textContent=nm(b.property);
+    const done=tk?tk.checks.filter(x=>x.done).length:0,total=tk?tk.checks.length:0;
+    let h=`<div class="prow"><span class="pk">宿泊者</span><span class="pv">${b.guest||'未登録'}</span></div>
+      <div class="prow"><span class="pk">チェックイン</span><span class="pv">${b.checkin}</span></div>
+      <div class="prow"><span class="pk">チェックアウト</span><span class="pv">${b.checkout}</span></div>
+      ${b.note?`<div class="prow"><span class="pk">メモ</span><span class="pv">${b.note}</span></div>`:''}
+      ${b.source==='gcal'?'<div style="margin-top:6px"><span style="font-size:10px;background:#e8f0fe;color:#1a73e8;padding:2px 8px;border-radius:20px">📅 Googleカレンダー</span></div>':''}`;
+    if(tk){h+=`<div class="sec-ttl">清掃チェックリスト（${done}/${total}）</div>
+      ${tk.checks.map((c,i)=>`<div class="cl-item" onclick="togCk(${id},${i})">
+        <div class="cl-box" style="${c.done?'background:'+dk(b.property)+';border-color:'+dk(b.property):''}">${c.done?'✓':''}</div>
+        <span class="cl-text ${c.done?'done':''}">${c.text}</span>
+      </div>`).join('')}
+      ${tk.done?'<div class="done-tag">✓ 清掃完了済み</div>':`<button class="btn-done" onclick="allDone(${id})">清掃完了にする</button>`}`;}
+    document.getElementById('pbody').innerHTML=h;
+  }else{
+    const s=SP.find(x=>x.id===id);if(!s)return;
+    document.getElementById('pdot').style.background='#9c27b0';
+    document.getElementById('ptitle').textContent=s.title;
+    let h=`<div class="prow"><span class="pk">日付</span><span class="pv">${s.date}</span></div>
+      ${s.prop?`<div class="prow"><span class="pk">物件</span><span class="pv">${nm(s.prop)}</span></div>`:''}
+      ${s.note?`<div class="prow"><span class="pk">メモ</span><span class="pv" style="font-size:11px;text-align:left;white-space:pre-wrap">${s.note}</span></div>`:''}
+      <button class="btn-done" style="background:#c62828;margin-top:12px" onclick="deleteSpot(${id})">削除する</button>`;
+    document.getElementById('pbody').innerHTML=h;
+  }
   document.getElementById('pnl').classList.add('on');
   document.getElementById('ov').classList.add('on');
 }
-function togCk(id,i){const tk=TK.find(t=>t.bookingId===id);if(!tk)return;tk.checks[i].done=!tk.checks[i].done;tk.done=tk.checks.every(c=>c.done);save();showD(id);render();}
-function allDone(id){const tk=TK.find(t=>t.bookingId===id);if(!tk)return;tk.done=true;tk.checks.forEach(c=>c.done=true);save();showD(id);render();}
+function togCk(id,i){const tk=TK.find(t=>t.bookingId===id);if(!tk)return;tk.checks[i].done=!tk.checks[i].done;tk.done=tk.checks.every(c=>c.done);save();showD(id,'booking');render();}
+function allDone(id){const tk=TK.find(t=>t.bookingId===id);if(!tk)return;tk.done=true;tk.checks.forEach(c=>c.done=true);save();showD(id,'booking');render();}
+function deleteSpot(id){SP=SP.filter(s=>s.id!==id);save();closePanel();render();}
 function closePanel(){document.getElementById('pnl').classList.remove('on');document.getElementById('ov').classList.remove('on');selId=null;}
-function openAdd(){
+function switchTab(tab){
+  curTab=tab;
+  document.getElementById('tab-booking').classList.toggle('active',tab==='booking');
+  document.getElementById('tab-spot').classList.toggle('active',tab==='spot');
+  document.getElementById('form-booking').style.display=tab==='booking'?'':'none';
+  document.getElementById('form-spot').style.display=tab==='spot'?'':'none';
+}
+function openAdd(tab){
   document.getElementById('ap').innerHTML=Object.keys(URLS).map(k=>`<option value="${k}">${nm(k)}</option>`).join('');
+  document.getElementById('sp-prop').innerHTML='<option value="">（なし）</option>'+Object.keys(URLS).map(k=>`<option value="${k}">${nm(k)}</option>`).join('');
   document.getElementById('ai').value=TD;document.getElementById('ao').value=TD;
   document.getElementById('ag').value='';document.getElementById('an').value='';
+  document.getElementById('sp-title').value='';document.getElementById('sp-date').value=TD;document.getElementById('sp-note').value='';
+  switchTab(tab||'booking');
   document.getElementById('madd').classList.add('on');
 }
 function closeAdd(){document.getElementById('madd').classList.remove('on')}
-function addB(){
-  const prop=document.getElementById('ap').value,ci=document.getElementById('ai').value,co=document.getElementById('ao').value;
-  const g=document.getElementById('ag').value,n=document.getElementById('an').value;
-  if(!ci||!co||co<=ci){alert('日付を確認してください');return}
-  const id=Date.now();
-  BK.push({id,property:prop,checkin:ci,checkout:co,guest:g,note:n,source:'manual'});
-  TK.push({bookingId:id,done:false,checks:CL.map(t=>({text:t,done:false}))});
-  save();closeAdd();render();showD(id);
+function addEntry(){
+  if(curTab==='booking'){
+    const prop=document.getElementById('ap').value,ci=document.getElementById('ai').value,co=document.getElementById('ao').value;
+    const g=document.getElementById('ag').value,n=document.getElementById('an').value;
+    if(!ci||!co||co<=ci){alert('日付を確認してください');return}
+    const id=Date.now();
+    BK.push({id,property:prop,checkin:ci,checkout:co,guest:g,note:n,source:'manual'});
+    TK.push({bookingId:id,done:false,checks:CL.map(t=>({text:t,done:false}))});
+    save();closeAdd();render();showD(id,'booking');
+  }else{
+    const title=document.getElementById('sp-title').value.trim(),date=document.getElementById('sp-date').value;
+    const prop=document.getElementById('sp-prop').value,note=document.getElementById('sp-note').value;
+    if(!title||!date){alert('タイトルと日付を入力してください');return}
+    const id=Date.now();
+    SP.push({id,title,date,prop,note});
+    save();closeAdd();render();showD(id,'spot');
+  }
 }
 document.getElementById('madd').addEventListener('click',function(e){if(e.target===this)closeAdd()});
 function cm(d){M+=d;if(M>11){M=0;Y++}if(M<0){M=11;Y--}render()}
@@ -254,13 +319,13 @@ async function parseIcal(text,prop){
   return evs;
 }
 async function fetchCal(prop,url){
-  const proxies=['https://corsproxy.io/?','https://api.allorigins.win/get?url='];
-  for(const px of proxies){
+  const px=['https://corsproxy.io/?','https://api.allorigins.win/get?url='];
+  for(const p of px){
     try{
-      const r=await fetch(px+encodeURIComponent(url),{signal:AbortSignal.timeout(8000)});
+      const r=await fetch(p+encodeURIComponent(url),{signal:AbortSignal.timeout(8000)});
       if(!r.ok)continue;
       let txt;
-      if(px.includes('allorigins')){const j=await r.json();txt=j.contents}else txt=await r.text();
+      if(p.includes('allorigins')){const j=await r.json();txt=j.contents}else txt=await r.text();
       if(txt&&txt.includes('BEGIN:VCALENDAR'))return await parseIcal(txt,prop);
     }catch{}
   }
@@ -289,7 +354,7 @@ async function sync(silent=false){
   const now=new Date(),ts=now.getHours()+':'+pad(now.getMinutes());
   st.textContent='同期 '+ts+(added+removed>0?` (+${added}/-${removed})`:'');
   localStorage.setItem('ls',now.toISOString());
-  render();if(selId)showD(selId);
+  render();if(selId)showD(selId.id,selId.type);
 }
 (function init(){
   render();

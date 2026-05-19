@@ -9,21 +9,13 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --blue:#1a73e8;--blue-light:#e8f0fe;--blue-dark:#1557b0;
-  --green:#0f9d58;--green-light:#e6f4ea;
-  --amber:#f4511e;--amber-light:#fce8e6;
-  --purple:#8430ce;--purple-light:#f3e8fd;
-  --gray-50:#f8f9fa;--gray-100:#f1f3f4;--gray-200:#e8eaed;
-  --gray-400:#9aa0a6;--gray-600:#5f6368;--gray-800:#3c4043;--gray-900:#202124;
-  --border:1px solid #e8eaed;--radius:8px;--radius-lg:12px;
-}
+:root{--blue:#1a73e8;--blue-light:#e8f0fe;--blue-dark:#1557b0;--green:#0f9d58;--green-light:#e6f4ea;--amber:#f4511e;--amber-light:#fce8e6;--purple:#8430ce;--gray-50:#f8f9fa;--gray-100:#f1f3f4;--gray-200:#e8eaed;--gray-400:#9aa0a6;--gray-600:#5f6368;--gray-800:#3c4043;--gray-900:#202124;--border:1px solid #e8eaed;--radius:8px;}
 body{font-family:'Noto Sans JP',sans-serif;background:#f1f3f4;color:var(--gray-900);font-size:14px;min-height:100vh}
 .layout{display:flex;height:100vh;overflow:hidden}
-.sidebar{width:240px;background:#fff;border-right:var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.sidebar{width:220px;background:#fff;border-right:var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
-.sidebar-logo{padding:16px 20px;border-bottom:var(--border);display:flex;align-items:center;gap:10px}
-.logo-icon{width:32px;height:32px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
+.sidebar-logo{padding:14px 16px;border-bottom:var(--border);display:flex;align-items:center;gap:10px}
+.logo-icon{width:30px;height:30px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px}
 .logo-text{font-size:14px;font-weight:600;color:var(--gray-900)}
 .logo-sub{font-size:11px;color:var(--gray-400)}
 .sidebar-section{padding:12px 16px;border-bottom:var(--border)}
@@ -33,9 +25,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f1f3f4;color:var(--gray-9
 .prop-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 .prop-name{font-size:13px;color:var(--gray-800);flex:1}
 .prop-toggle{width:16px;height:16px;border-radius:3px;border:1.5px solid;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.staff-item{display:flex;align-items:center;gap:8px;padding:4px}
-.staff-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0}
-.staff-name{font-size:12px;color:var(--gray-600)}
 .sync-section{padding:12px 16px;margin-top:auto;border-top:var(--border)}
 .sync-title{font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
 .sync-status{font-size:12px;color:var(--gray-600);margin-bottom:8px;display:flex;align-items:center;gap:4px}
@@ -43,7 +32,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f1f3f4;color:var(--gray-9
 .sync-btn:hover{background:var(--blue-dark)}
 .sync-btn:disabled{background:var(--gray-200);color:var(--gray-400);cursor:not-allowed}
 .header{padding:10px 20px;background:#fff;border-bottom:var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0}
-.nav-btn{width:30px;height:30px;border:var(--border);border-radius:6px;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-600);font-size:16px}
+.nav-btn{width:30px;height:30px;border:var(--border);border-radius:6px;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-600)}
 .nav-btn:hover{background:var(--gray-50)}
 .month-label{font-size:18px;font-weight:600;color:var(--gray-900);flex:1}
 .today-btn{padding:6px 14px;border:var(--border);border-radius:20px;background:#fff;font-size:13px;cursor:pointer;color:var(--gray-700);font-family:inherit}
@@ -74,7 +63,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f1f3f4;color:var(--gray-9
 .detail-section{margin-bottom:16px}
 .detail-section-label{font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
 .info-row{display:flex;align-items:flex-start;gap:8px;padding:4px 0;font-size:13px}
-.info-icon{color:var(--gray-400);flex-shrink:0;margin-top:1px}
 .info-label{color:var(--gray-600);min-width:80px;flex-shrink:0}
 .info-val{color:var(--gray-900)}
 .checklist-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--gray-100)}
@@ -106,9 +94,9 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f1f3f4;color:var(--gray-9
 @keyframes spin{to{transform:rotate(360deg)}}
 .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
 .badge-green{background:var(--green-light);color:var(--green)}
-.badge-amber{background:var(--amber-light);color:var(--amber)}
+.badge-amber{background:#fce8e6;color:var(--amber)}
 .badge-blue{background:var(--blue-light);color:var(--blue)}
-@media(max-width:900px){.detail-panel{display:none}.sidebar{width:200px}}
+@media(max-width:900px){.detail-panel{display:none}.sidebar{width:180px}}
 @media(max-width:600px){.sidebar{display:none}.event-bar{font-size:9px;padding:1px 3px}}
 </style>
 </head>
@@ -122,10 +110,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f1f3f4;color:var(--gray-9
   <div class="sidebar-section">
     <div class="sidebar-label">物件</div>
     <div id="property-list"></div>
-  </div>
-  <div class="sidebar-section">
-    <div class="sidebar-label">清掃スタッフ</div>
-    <div id="staff-list"></div>
   </div>
   <div class="sync-section">
     <div class="sync-title">Googleカレンダー連携</div>
@@ -150,8 +134,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f1f3f4;color:var(--gray-9
     <div class="cal-container">
       <div class="dow-row">
         <div class="dow sun">日</div><div class="dow">月</div><div class="dow">火</div>
-        <div class="dow">水</div><div class="dow">木</div><div class="dow">金</div>
-        <div class="dow sat">土</div>
+        <div class="dow">水</div><div class="dow">木</div><div class="dow">金</div><div class="dow sat">土</div>
       </div>
       <div class="cal-grid" id="cal-grid"></div>
     </div>
@@ -185,29 +168,17 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f1f3f4;color:var(--gray-9
 </div>
 </div>
 <script>
-const ICAL_URLS = {
-  'nel.shizuoka': 'https://calendar.google.com/calendar/ical/b7c977bab349c38525963f73eb023db41e3df06492384122f85660b2ec030a9d%40group.calendar.google.com/private-3fdd6e18cf76815616b6d26ef78a1383/basic.ics',
-  'SAKURA HAUS': 'https://calendar.google.com/calendar/ical/d4176b763462e0fbf40ac8e1d2d714dfbfc210936c73b8a4c9528126585d5ab6%40group.calendar.google.com/private-0f6ee0f56a6609ce4babd78a2c20c7b1/basic.ics',
-  'SAKUYA': 'https://calendar.google.com/calendar/ical/ab28b96b37415ef5bd0e475e90c30e56b7a1e47d255cb44859dd212e69e5f4bb%40group.calendar.google.com/private-8ff64fcbce95425a735341748788eadb/basic.ics'
-};
-const PROP_COLORS = {'nel.shizuoka':'#1a73e8','SAKURA HAUS':'#0f9d58','SAKUYA':'#f4511e'};
-const CHECKLIST = ['寝具・タオル交換','浴室・洗面台清掃','トイレ清掃','キッチン清掃','床掃除・モップ','ゴミ捨て','アメニティ補充','冷蔵庫確認','備品チェック','鍵の確認・補充'];
-const STAFF_LIST = [
-  {id:1,name:'田中 美咲',color:'#1a73e8'},{id:2,name:'鈴木 一郎',color:'#0f9d58'},
-  {id:3,name:'佐藤 花子',color:'#f4511e'},{id:4,name:'山本 健太',color:'#8430ce'},
-  {id:5,name:'中村あかり',color:'#f09300'},{id:6,name:'高橋 誠',color:'#d93025'},
-];
+const ICAL_URLS={'nel.shizuoka':'https://calendar.google.com/calendar/ical/b7c977bab349c38525963f73eb023db41e3df06492384122f85660b2ec030a9d%40group.calendar.google.com/private-3fdd6e18cf76815616b6d26ef78a1383/basic.ics','SAKURA HAUS':'https://calendar.google.com/calendar/ical/d4176b763462e0fbf40ac8e1d2d714dfbfc210936c73b8a4c9528126585d5ab6%40group.calendar.google.com/private-0f6ee0f56a6609ce4babd78a2c20c7b1/basic.ics','SAKUYA':'https://calendar.google.com/calendar/ical/ab28b96b37415ef5bd0e475e90c30e56b7a1e47d255cb44859dd212e69e5f4bb%40group.calendar.google.com/private-8ff64fcbce95425a735341748788eadb/basic.ics'};
+const PROP_COLORS={'nel.shizuoka':'#1a73e8','SAKURA HAUS':'#0f9d58','SAKUYA':'#f4511e'};
+const CHECKLIST=['寝具・タオル交換','浴室・洗面台清掃','トイレ清掃','キッチン清掃','床掃除・モップ','ゴミ捨て','アメニティ補充','冷蔵庫確認','備品チェック','鍵の確認・補充'];
+const STAFF_LIST=[{id:1,name:'田中 美咲',color:'#1a73e8'},{id:2,name:'鈴木 一郎',color:'#0f9d58'},{id:3,name:'佐藤 花子',color:'#f4511e'},{id:4,name:'山本 健太',color:'#8430ce'},{id:5,name:'中村あかり',color:'#f09300'},{id:6,name:'高橋 誠',color:'#d93025'}];
 let curYear=new Date().getFullYear(),curMonth=new Date().getMonth();
 const today=new Date();
 let selectedBookingId=null;
 let bookings=JSON.parse(localStorage.getItem('cleaningBookings')||'[]');
 let tasks=JSON.parse(localStorage.getItem('cleaningTasks')||'[]');
 let propVisible=JSON.parse(localStorage.getItem('propVisible')||'{"nel.shizuoka":true,"SAKURA HAUS":true,"SAKUYA":true}');
-function saveData(){
-  localStorage.setItem('cleaningBookings',JSON.stringify(bookings));
-  localStorage.setItem('cleaningTasks',JSON.stringify(tasks));
-  localStorage.setItem('propVisible',JSON.stringify(propVisible));
-}
+function saveData(){localStorage.setItem('cleaningBookings',JSON.stringify(bookings));localStorage.setItem('cleaningTasks',JSON.stringify(tasks));localStorage.setItem('propVisible',JSON.stringify(propVisible));}
 function pad(n){return String(n).padStart(2,'0')}
 function dStr(y,m,d){return y+'-'+pad(m+1)+'-'+pad(d)}
 function getStaff(id){return STAFF_LIST.find(s=>s.id===id)||{name:'未割当',color:'#9aa0a6'}}
@@ -221,18 +192,12 @@ function renderSidebar(){
         ${vis?'<i class="ti ti-check" style="font-size:9px" aria-hidden="true"></i>':''}
       </div></div>`;
   }).join('');
-  document.getElementById('staff-list').innerHTML=STAFF_LIST.map(s=>`
-    <div class="staff-item">
-      <div class="staff-avatar" style="background:${s.color}22;color:${s.color}">${s.name.charAt(0)}</div>
-      <div class="staff-name">${s.name}</div>
-    </div>`).join('');
 }
 function toggleProp(name){propVisible[name]=!propVisible[name];saveData();renderSidebar();renderCalendar();}
 function renderCalendar(){
   const months=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
   document.getElementById('month-label').textContent=curYear+'年 '+months[curMonth];
-  const first=new Date(curYear,curMonth,1).getDay(),dim=new Date(curYear,curMonth+1,0).getDate();
-  const prevDim=new Date(curYear,curMonth,0).getDate();
+  const first=new Date(curYear,curMonth,1).getDay(),dim=new Date(curYear,curMonth+1,0).getDate(),prevDim=new Date(curYear,curMonth,0).getDate();
   const cells=[];
   for(let i=first-1;i>=0;i--)cells.push({d:prevDim-i,other:true,m:curMonth-1<0?11:curMonth-1,yr:curMonth-1<0?curYear-1:curYear});
   for(let d=1;d<=dim;d++)cells.push({d,other:false,m:curMonth,yr:curYear});
@@ -247,22 +212,21 @@ function renderCalendar(){
     dayB.forEach(b=>{
       const col=PROP_COLORS[b.property]||'#888',task=tasks.find(t=>t.bookingId===b.id);
       if(b.checkin===ds&&count<3){
-        evHtml+=`<div class="event-bar" style="background:${col}18;color:${col};border-left:2px solid ${col}" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-arrow-down-circle" style="font-size:9px;flex-shrink:0" aria-hidden="true"></i> IN ${b.property.split(' ')[0]}</div>`;count++;
+        evHtml+=`<div class="event-bar" style="background:${col}15;color:${col}99;border-left:2px solid ${col}55;font-size:10px" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-login" style="font-size:9px;flex-shrink:0" aria-hidden="true"></i> IN ${b.property.split(' ')[0]}</div>`;count++;
+      }
+      if(ds>b.checkin&&ds<b.checkout&&count<2){
+        evHtml+=`<div class="event-bar" style="background:${col}10;color:${col}66;border-left:1px solid ${col}33;font-size:10px" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-home" style="font-size:9px;flex-shrink:0" aria-hidden="true"></i> 滞在 ${b.property.split(' ')[0]}</div>`;count++;
       }
       if(b.checkout===ds&&count<3){
-        evHtml+=`<div class="event-bar" style="background:${col};color:#fff" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-arrow-up-circle" style="font-size:9px;flex-shrink:0" aria-hidden="true"></i> OUT ${b.property.split(' ')[0]}</div>`;
-        if(task){const done=task.checks.filter(c=>c.done).length,pct=Math.round(done/task.checks.length*100),s=getStaff(b.staffId);
-          evHtml+=`<div class="cleaning-chip" style="border-color:${col};color:${col};background:${col}10" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-brush" style="font-size:9px" aria-hidden="true"></i> ${s.name.split(' ')[0]} ${task.done?'✓':pct+'%'}</div>`;}
+        evHtml+=`<div class="event-bar" style="background:${col};color:#fff;font-weight:600" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-brush" style="font-size:9px;flex-shrink:0" aria-hidden="true"></i> 清掃 ${b.property.split(' ')[0]}</div>`;
+        if(task){const pct=Math.round(task.checks.filter(c=>c.done).length/task.checks.length*100);evHtml+=`<div class="cleaning-chip" style="border-color:${col};color:${col};background:${col}20;font-weight:500" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-checklist" style="font-size:9px" aria-hidden="true"></i> ${task.done?'✓完了':pct+'%'}</div>`;}
         count++;
       }
     });
     return `<div class="cal-cell" onclick="clickCell('${ds}')"><div class="${numCls}">${cell.d}</div><div>${evHtml}</div></div>`;
   }).join('');
 }
-function clickCell(ds){
-  const dayB=bookings.filter(b=>propVisible[b.property]&&(b.checkin===ds||b.checkout===ds||(ds>b.checkin&&ds<b.checkout)));
-  if(dayB.length>=1)showDetail(dayB[0].id);
-}
+function clickCell(ds){const dayB=bookings.filter(b=>propVisible[b.property]&&(b.checkin===ds||b.checkout===ds||(ds>b.checkin&&ds<b.checkout)));if(dayB.length>=1)showDetail(dayB[0].id);}
 function showDetail(id){
   selectedBookingId=id;
   const b=bookings.find(x=>x.id===id);if(!b)return;
@@ -280,9 +244,7 @@ function showDetail(id){
       <div>${task.checks.map((c,i)=>`<div class="checklist-item">
         <div class="check-box${c.done?' checked':''}" style="${c.done?'background:'+col+';border-color:'+col:''}" onclick="toggleCheck(${id},${i})">
           ${c.done?'<i class="ti ti-check" style="font-size:10px;color:#fff" aria-hidden="true"></i>':''}
-        </div>
-        <span class="check-label${c.done?' done':''}">${c.text}</span>
-      </div>`).join('')}</div>
+        </div><span class="check-label${c.done?' done':''}">${c.text}</span></div>`).join('')}</div>
       ${task.done?'<div class="complete-banner"><i class="ti ti-check" aria-hidden="true"></i> 清掃完了済み</div>':`<button class="complete-btn" onclick="markDone(${id})"><i class="ti ti-check" aria-hidden="true"></i> 清掃完了にする</button>`}
     </div>`;
   }
@@ -293,26 +255,16 @@ function showDetail(id){
   <div class="detail-body">
     <div class="detail-section">
       <div class="detail-section-label">予約情報</div>
-      <div class="info-row"><i class="ti ti-user info-icon" aria-hidden="true" style="font-size:14px"></i><span class="info-label">宿泊者</span><span class="info-val">${b.guest||'（未登録）'}</span></div>
-      <div class="info-row"><i class="ti ti-login info-icon" aria-hidden="true" style="font-size:14px"></i><span class="info-label">チェックイン</span><span class="info-val">${b.checkin}</span></div>
-      <div class="info-row"><i class="ti ti-logout info-icon" aria-hidden="true" style="font-size:14px"></i><span class="info-label">チェックアウト</span><span class="info-val">${b.checkout}</span></div>
-      <div class="info-row"><i class="ti ti-brush info-icon" aria-hidden="true" style="font-size:14px"></i><span class="info-label">清掃担当</span>
-        <span class="info-val" style="display:flex;align-items:center;gap:6px">
-          <span style="width:18px;height:18px;border-radius:50%;background:${s.color}22;color:${s.color};display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600">${s.name.charAt(0)}</span>${s.name}
-        </span></div>
-      ${b.note?`<div class="info-row"><i class="ti ti-notes info-icon" aria-hidden="true" style="font-size:14px"></i><span class="info-label">メモ</span><span class="info-val" style="font-size:12px">${b.note}</span></div>`:''}
+      <div class="info-row"><span class="info-label">宿泊者</span><span class="info-val">${b.guest||'（未登録）'}</span></div>
+      <div class="info-row"><span class="info-label">チェックイン</span><span class="info-val">${b.checkin}</span></div>
+      <div class="info-row"><span class="info-label">チェックアウト</span><span class="info-val">${b.checkout}</span></div>
+      <div class="info-row"><span class="info-label">清掃担当</span><span class="info-val" style="display:flex;align-items:center;gap:6px"><span style="width:18px;height:18px;border-radius:50%;background:${s.color}22;color:${s.color};display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600">${s.name.charAt(0)}</span>${s.name}</span></div>
+      ${b.note?`<div class="info-row"><span class="info-label">メモ</span><span class="info-val" style="font-size:12px">${b.note}</span></div>`:''}
       ${b.source==='gcal'?'<div style="margin-top:8px"><span class="badge badge-blue"><i class="ti ti-brand-google" style="font-size:10px" aria-hidden="true"></i> Googleカレンダーから取得</span></div>':''}
     </div>${taskHtml}</div>`;
 }
-function toggleCheck(bookingId,idx){
-  const task=tasks.find(t=>t.bookingId===bookingId);if(!task)return;
-  task.checks[idx].done=!task.checks[idx].done;task.done=task.checks.every(c=>c.done);
-  saveData();showDetail(bookingId);renderCalendar();
-}
-function markDone(bookingId){
-  const task=tasks.find(t=>t.bookingId===bookingId);if(!task)return;
-  task.done=true;task.checks.forEach(c=>c.done=true);saveData();showDetail(bookingId);renderCalendar();
-}
+function toggleCheck(bookingId,idx){const task=tasks.find(t=>t.bookingId===bookingId);if(!task)return;task.checks[idx].done=!task.checks[idx].done;task.done=task.checks.every(c=>c.done);saveData();showDetail(bookingId);renderCalendar();}
+function markDone(bookingId){const task=tasks.find(t=>t.bookingId===bookingId);if(!task)return;task.done=true;task.checks.forEach(c=>c.done=true);saveData();showDetail(bookingId);renderCalendar();}
 function closeDetail(){document.getElementById('detail-panel').classList.add('hidden');selectedBookingId=null;}
 function openAddModal(){
   document.getElementById('add-prop').innerHTML=Object.keys(ICAL_URLS).map(n=>`<option value="${n}">${n}</option>`).join('');
@@ -349,7 +301,7 @@ async function parseIcal(text,property){
         if(!summary.toLowerCase().includes('blocked')&&!summary.toLowerCase().includes('unavailable')){events.push({checkin,checkout,guest:summary,property});}
       }
       current=null;
-    } else if(current){
+    }else if(current){
       if(line.startsWith('DTSTART'))current.dtstart=line.split(':').slice(1).join(':');
       else if(line.startsWith('DTEND'))current.dtend=line.split(':').slice(1).join(':');
       else if(line.startsWith('SUMMARY'))current.summary=line.split(':').slice(1).join(':');
@@ -364,8 +316,7 @@ async function fetchIcal(property,url){
       const res=await fetch(proxy+encodeURIComponent(url),{signal:AbortSignal.timeout(8000)});
       if(!res.ok)continue;
       let text;
-      if(proxy.includes('allorigins')){const json=await res.json();text=json.contents;}
-      else{text=await res.text();}
+      if(proxy.includes('allorigins')){const json=await res.json();text=json.contents;}else{text=await res.text();}
       if(text&&text.includes('BEGIN:VCALENDAR'))return await parseIcal(text,property);
     }catch(e){continue;}
   }
@@ -377,7 +328,7 @@ async function syncCalendars(silent=false){
   if(!silent)statusEl.innerHTML='<i class="ti ti-refresh" style="font-size:14px;color:#1a73e8;animation:spin .8s linear infinite" aria-hidden="true"></i><span> 同期中...</span>';
   let newCount=0,updatedCount=0;
   const defaultStaff={'nel.shizuoka':1,'SAKURA HAUS':2,'SAKUYA':3};
-  const results=await Promise.all(Object.entries(ICAL_URLS).map(([property,url])=>fetchIcal(property,url)));
+  const results=await Promise.all(Object.entries(ICAL_URLS).map(([p,u])=>fetchIcal(p,u)));
   Object.keys(ICAL_URLS).forEach((property,i)=>{
     const events=results[i];
     events.forEach(ev=>{
@@ -385,8 +336,7 @@ async function syncCalendars(silent=false){
       if(!existing){const id=Date.now()+Math.random();bookings.push({id,property,checkin:ev.checkin,checkout:ev.checkout,staffId:defaultStaff[property]||1,guest:ev.guest,note:'',source:'gcal'});tasks.push({bookingId:id,done:false,checks:CHECKLIST.map(t=>({text:t,done:false}))});newCount++;}
     });
     const gcalKeys=new Set(events.map(e=>e.property+'|'+e.checkin+'|'+e.checkout));
-    const removed=bookings.filter(b=>b.property===property&&b.source==='gcal'&&!gcalKeys.has(b.property+'|'+b.checkin+'|'+b.checkout));
-    removed.forEach(b=>{bookings=bookings.filter(x=>x.id!==b.id);tasks=tasks.filter(t=>t.bookingId!==b.id);updatedCount++;});
+    bookings.filter(b=>b.property===property&&b.source==='gcal'&&!gcalKeys.has(b.property+'|'+b.checkin+'|'+b.checkout)).forEach(b=>{bookings=bookings.filter(x=>x.id!==b.id);tasks=tasks.filter(t=>t.bookingId!==b.id);updatedCount++;});
   });
   saveData();btn.disabled=false;
   const now=new Date(),timeStr=now.getHours()+':'+pad(now.getMinutes()),changed=newCount+updatedCount;

@@ -6,161 +6,130 @@
 <title>清掃管理カレンダー</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--blue:#1a73e8;--blue-light:#e8f0fe;--blue-dark:#1557b0;--green:#0f9d58;--green-light:#e6f4ea;--amber:#f4511e;--amber-light:#fce8e6;--gray-50:#f8f9fa;--gray-100:#f1f3f4;--gray-200:#e8eaed;--gray-400:#9aa0a6;--gray-600:#5f6368;--gray-800:#3c4043;--gray-900:#202124;--border:1px solid #e8eaed;--radius:8px;}
-body{font-family:'Noto Sans JP',sans-serif;background:#f1f3f4;color:var(--gray-900);font-size:14px;min-height:100vh}
-.layout{display:flex;height:100vh;overflow:hidden}
-.sidebar{width:220px;background:#fff;border-right:var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
-.sidebar-logo{padding:14px 16px;border-bottom:var(--border);display:flex;align-items:center;gap:10px}
-.logo-icon{width:30px;height:30px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px}
-.logo-text{font-size:14px;font-weight:600;color:var(--gray-900)}
-.logo-sub{font-size:11px;color:var(--gray-400)}
-.sidebar-section{padding:12px 16px;border-bottom:var(--border)}
-.sidebar-label{font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
-.property-item{display:flex;align-items:center;gap:8px;padding:5px 4px;border-radius:6px;cursor:pointer;transition:background .15s}
-.property-item:hover{background:var(--gray-50)}
-.prop-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.prop-name{font-size:13px;color:var(--gray-800);flex:1}
-.prop-toggle{width:16px;height:16px;border-radius:3px;border:1.5px solid;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.sync-section{padding:12px 16px;margin-top:auto;border-top:var(--border)}
-.sync-title{font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-.sync-status{font-size:12px;color:var(--gray-600);margin-bottom:8px;display:flex;align-items:center;gap:4px}
-.sync-btn{width:100%;padding:7px;background:var(--blue);color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit}
-.sync-btn:hover{background:var(--blue-dark)}
-.sync-btn:disabled{background:var(--gray-200);color:var(--gray-400);cursor:not-allowed}
-.header{padding:10px 20px;background:#fff;border-bottom:var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0}
-.nav-btn{width:30px;height:30px;border:var(--border);border-radius:6px;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-600)}
+:root{--c-nel:#16a34a;--c-sakura:#e91e8c;--c-sakuya:#f59e0b;--gray-50:#f8f9fa;--gray-100:#f1f3f4;--gray-200:#e8eaed;--gray-400:#9aa0a6;--gray-600:#5f6368;--gray-800:#3c4043;--gray-900:#202124;--border:1px solid #e0e0e0;--blue:#1a73e8;}
+body{font-family:'Noto Sans JP',sans-serif;background:#fff;color:var(--gray-900);font-size:13px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.app-header{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:var(--border);flex-shrink:0;background:#fff}
+.app-title{font-size:16px;font-weight:600;color:var(--gray-900);margin-right:8px}
+.nav-btn{width:28px;height:28px;border:var(--border);border-radius:50%;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-600);font-size:14px}
 .nav-btn:hover{background:var(--gray-50)}
-.month-label{font-size:18px;font-weight:600;color:var(--gray-900);flex:1}
-.today-btn{padding:6px 14px;border:var(--border);border-radius:20px;background:#fff;font-size:13px;cursor:pointer;color:var(--gray-700);font-family:inherit}
-.add-btn{padding:6px 16px;background:var(--blue);color:#fff;border:none;border-radius:20px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit}
-.add-btn:hover{background:var(--blue-dark)}
-.cal-container{flex:1;overflow-y:auto;display:flex;flex-direction:column}
-.dow-row{display:grid;grid-template-columns:repeat(7,1fr);background:#fff;border-bottom:var(--border);flex-shrink:0}
-.dow{text-align:center;padding:8px 4px;font-size:12px;font-weight:500;color:var(--gray-600)}
-.dow.sun{color:#d93025}.dow.sat{color:var(--blue)}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);flex:1}
-.cal-cell{border-right:var(--border);border-bottom:var(--border);padding:4px;min-height:100px;cursor:pointer;transition:background .1s}
-.cal-cell:nth-child(7n){border-right:none}
-.cal-cell:hover{background:var(--gray-50)}
-.day-num{width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:12px;border-radius:50%;color:var(--gray-600);margin-bottom:2px}
+.month-label{font-size:16px;font-weight:500;color:var(--gray-900);min-width:100px}
+.today-btn{padding:5px 14px;border:var(--border);border-radius:20px;background:#fff;font-size:12px;cursor:pointer;color:var(--gray-700);font-family:inherit}
+.today-btn:hover{background:var(--gray-50)}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.add-btn{padding:6px 14px;background:var(--blue);color:#fff;border:none;border-radius:20px;font-size:12px;cursor:pointer;font-family:inherit}
+.add-btn:hover{opacity:.9}
+.sync-btn-small{padding:5px 12px;border:var(--border);border-radius:20px;background:#fff;font-size:12px;cursor:pointer;color:var(--gray-600);font-family:inherit}
+.sync-status-text{font-size:11px;color:var(--gray-400)}
+.legend{display:flex;gap:12px;padding:6px 16px;border-bottom:var(--border);flex-shrink:0;background:#fafafa}
+.legend-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gray-600)}
+.legend-dot{width:12px;height:8px;border-radius:3px}
+.cal-wrap{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.dow-row{display:grid;grid-template-columns:50px repeat(7,1fr);border-bottom:2px solid var(--gray-200);flex-shrink:0;background:#fff;position:sticky;top:0;z-index:10}
+.dow-spacer{border-right:var(--border)}
+.dow-cell{text-align:center;padding:6px 4px;font-size:12px;font-weight:500;color:var(--gray-600);border-right:var(--border)}
+.dow-cell.sun{color:#d93025}.dow-cell.sat{color:var(--blue)}
+.week-row{display:grid;grid-template-columns:50px repeat(7,1fr);border-bottom:var(--border);min-height:90px}
+.week-num{display:flex;align-items:flex-start;justify-content:center;padding:6px 4px;font-size:10px;color:var(--gray-400);border-right:var(--border);background:#fafafa}
+.day-col{border-right:var(--border);padding:2px;position:relative}
+.day-col:last-child{border-right:none}
+.day-num{width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;border-radius:50%;color:var(--gray-600);margin:1px}
 .day-num.today{background:var(--blue);color:#fff;font-weight:600}
 .day-num.sun{color:#d93025}.day-num.sat{color:var(--blue)}
-.day-num.other{color:var(--gray-200)}
-.event-bar{font-size:11px;padding:2px 6px;border-radius:4px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;display:flex;align-items:center;gap:3px;line-height:1.6}
-.event-bar:hover{opacity:.85}
-.cleaning-chip{font-size:10px;padding:1px 5px;border-radius:10px;margin-bottom:2px;display:flex;align-items:center;gap:3px;line-height:1.7;cursor:pointer;border:1px dashed}
-.detail-panel{width:300px;border-left:var(--border);background:#fff;overflow-y:auto;flex-shrink:0;display:flex;flex-direction:column}
-.detail-panel.hidden{display:none}
-.detail-header{padding:14px 16px;border-bottom:var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.detail-title{font-size:14px;font-weight:600;color:var(--gray-900)}
-.close-btn{width:24px;height:24px;border:none;background:none;cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--gray-400)}
+.day-num.other{opacity:.3}
+.ev-container{display:flex;flex-direction:column;gap:1px;margin-top:1px}
+.ev-bar{font-size:10px;padding:2px 5px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;line-height:1.6;font-weight:500}
+.ev-bar:hover{opacity:.85}
+.detail-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.3);z-index:50;display:none}
+.detail-overlay.open{display:block}
+.detail-panel{position:fixed;right:0;top:0;bottom:0;width:320px;background:#fff;border-left:var(--border);z-index:51;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .2s}
+.detail-panel.open{transform:translateX(0)}
+.detail-header{padding:14px 16px;border-bottom:var(--border);display:flex;align-items:center;justify-content:space-between}
+.detail-prop-name{font-size:14px;font-weight:600}
+.close-btn{width:28px;height:28px;border:none;background:none;cursor:pointer;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gray-400);font-size:18px}
 .close-btn:hover{background:var(--gray-100)}
-.detail-body{padding:14px 16px;flex:1;overflow-y:auto}
-.detail-section{margin-bottom:16px}
-.detail-section-label{font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
-.info-row{display:flex;align-items:flex-start;gap:8px;padding:4px 0;font-size:13px}
-.info-label{color:var(--gray-600);min-width:80px;flex-shrink:0}
-.info-val{color:var(--gray-900)}
-.checklist-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--gray-100)}
+.detail-body{padding:14px 16px;overflow-y:auto;flex:1}
+.d-section{margin-bottom:16px}
+.d-label{font-size:10px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.d-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:13px;border-bottom:1px solid var(--gray-100)}
+.d-row:last-child{border-bottom:none}
+.d-key{color:var(--gray-600)}
+.d-val{color:var(--gray-900);font-weight:500}
+.checklist-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--gray-100);cursor:pointer}
 .checklist-item:last-child{border-bottom:none}
-.check-box{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--gray-200);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
-.check-box.checked{background:var(--blue);border-color:var(--blue)}
-.check-label{font-size:13px;color:var(--gray-800);flex:1}
-.check-label.done{text-decoration:line-through;color:var(--gray-400)}
-.progress-wrap{margin-bottom:8px}
-.progress-bar{height:4px;background:var(--gray-100);border-radius:2px}
+.check-box{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--gray-200);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px}
+.check-text{font-size:12px;color:var(--gray-800);flex:1}
+.check-text.done{text-decoration:line-through;color:var(--gray-400)}
+.progress-bar{height:4px;background:var(--gray-100);border-radius:2px;margin:4px 0 2px}
 .progress-fill{height:4px;border-radius:2px;transition:width .3s}
-.progress-text{font-size:11px;color:var(--gray-400);text-align:right;margin-top:2px}
-.complete-btn{width:100%;padding:8px;background:var(--green);color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:6px}
-.complete-banner{background:var(--green-light);border-radius:6px;padding:8px 12px;text-align:center;font-size:13px;color:var(--green);font-weight:500;margin-top:8px}
+.progress-text{font-size:10px;color:var(--gray-400);text-align:right}
+.complete-btn{width:100%;padding:8px;background:#16a34a;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit;margin-top:10px}
+.done-banner{background:#e6f4ea;border-radius:6px;padding:8px;text-align:center;font-size:12px;color:#16a34a;font-weight:500;margin-top:10px}
+.badge-gcal{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;background:#e8f0fe;color:#1a73e8;margin-top:6px}
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:100}
 .modal-overlay.open{display:flex}
-.modal{background:#fff;border-radius:12px;padding:20px;width:400px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.15)}
-.modal-title{font-size:16px;font-weight:600;margin-bottom:16px;color:var(--gray-900)}
-.form-group{margin-bottom:12px}
-.form-label{font-size:12px;color:var(--gray-600);margin-bottom:4px;display:block}
-.form-group input,.form-group select{width:100%;padding:8px 10px;border:var(--border);border-radius:6px;font-size:13px;font-family:inherit;color:var(--gray-900);background:#fff}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
-.btn-cancel{padding:8px 16px;border:var(--border);border-radius:6px;background:#fff;font-size:13px;cursor:pointer;font-family:inherit;color:var(--gray-700)}
-.btn-save{padding:8px 16px;background:var(--blue);color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit}
-.empty-detail{padding:40px 20px;text-align:center;color:var(--gray-400)}
-.empty-icon{font-size:48px;display:block;margin-bottom:12px;opacity:.3}
-.spinner{width:32px;height:32px;border:3px solid var(--gray-200);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+.modal{background:#fff;border-radius:12px;padding:20px;width:380px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.2)}
+.modal-title{font-size:15px;font-weight:600;margin-bottom:14px}
+.form-group{margin-bottom:10px}
+.form-label{font-size:11px;color:var(--gray-600);margin-bottom:3px;display:block}
+.form-group input,.form-group select{width:100%;padding:7px 10px;border:var(--border);border-radius:6px;font-size:13px;font-family:inherit;color:var(--gray-900);background:#fff}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.btn-cancel{padding:7px 14px;border:var(--border);border-radius:6px;background:#fff;font-size:13px;cursor:pointer;font-family:inherit}
+.btn-save{padding:7px 14px;background:var(--blue);color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid var(--gray-200);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
-.badge-green{background:var(--green-light);color:var(--green)}
-.badge-amber{background:#fce8e6;color:var(--amber)}
-.badge-blue{background:var(--blue-light);color:var(--blue)}
-@media(max-width:900px){.detail-panel{display:none}.sidebar{width:180px}}
-@media(max-width:600px){.sidebar{display:none}.event-bar{font-size:9px;padding:1px 3px}}
 </style>
 </head>
 <body>
-<div class="layout">
-<div class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-icon"><i class="ti ti-home" aria-hidden="true"></i></div>
-    <div><div class="logo-text">清掃管理</div><div class="logo-sub">民泊・旅館</div></div>
-  </div>
-  <div class="sidebar-section">
-    <div class="sidebar-label">物件</div>
-    <div id="property-list"></div>
-  </div>
-  <div class="sync-section">
-    <div class="sync-title">Googleカレンダー連携</div>
-    <div class="sync-status" id="sync-status">
-      <i class="ti ti-circle-check" style="font-size:14px;color:#0f9d58" aria-hidden="true"></i>
-      <span>接続済み（3物件）</span>
-    </div>
-    <button class="sync-btn" id="sync-btn" onclick="syncCalendars()">
-      <i class="ti ti-refresh" aria-hidden="true"></i><span>今すぐ同期</span>
-    </button>
+<div class="app-header">
+  <div class="app-title">🏠 清掃管理</div>
+  <button class="nav-btn" onclick="changeMonth(-1)">&#8249;</button>
+  <button class="nav-btn" onclick="changeMonth(1)">&#8250;</button>
+  <div class="month-label" id="month-label"></div>
+  <button class="today-btn" onclick="goToday()">今日</button>
+  <div class="header-right">
+    <span class="sync-status-text" id="sync-status-text">読み込み中...</span>
+    <button class="sync-btn-small" id="sync-btn" onclick="syncCalendars(false)">🔄 同期</button>
+    <button class="add-btn" onclick="openAddModal()">＋ 予約追加</button>
   </div>
 </div>
-<div class="main">
-  <div class="header">
-    <button class="nav-btn" onclick="changeMonth(-1)" aria-label="前月"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
-    <button class="nav-btn" onclick="changeMonth(1)" aria-label="翌月"><i class="ti ti-chevron-right" aria-hidden="true"></i></button>
-    <div class="month-label" id="month-label"></div>
-    <button class="today-btn" onclick="goToday()">今日</button>
-    <button class="add-btn" onclick="openAddModal()"><i class="ti ti-plus" aria-hidden="true"></i> 予約追加</button>
-  </div>
-  <div style="display:flex;flex:1;overflow:hidden">
-    <div class="cal-container">
-      <div class="dow-row">
-        <div class="dow sun">日</div><div class="dow">月</div><div class="dow">火</div>
-        <div class="dow">水</div><div class="dow">木</div><div class="dow">金</div><div class="dow sat">土</div>
-      </div>
-      <div class="cal-grid" id="cal-grid"></div>
-    </div>
-    <div class="detail-panel hidden" id="detail-panel">
-      <div class="empty-detail">
-        <i class="ti ti-calendar empty-icon" aria-hidden="true"></i>
-        <p style="font-size:13px">予定をクリックすると詳細が表示されます</p>
-      </div>
-    </div>
-  </div>
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>nel.</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#e91e8c"></div>桜ハウス</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>SAKUYA</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#16a34a;opacity:.3"></div>滞在中（薄）</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>清掃日（濃）</div>
 </div>
+<div class="cal-wrap">
+  <div class="dow-row">
+    <div class="dow-spacer"></div>
+    <div class="dow-cell sun">日</div><div class="dow-cell">月</div><div class="dow-cell">火</div>
+    <div class="dow-cell">水</div><div class="dow-cell">木</div><div class="dow-cell">金</div>
+    <div class="dow-cell sat">土</div>
+  </div>
+  <div id="cal-body"></div>
+</div>
+<div class="detail-overlay" id="detail-overlay" onclick="closeDetail()"></div>
+<div class="detail-panel" id="detail-panel">
+  <div class="detail-header">
+    <div class="detail-prop-name" id="dp-title">詳細</div>
+    <button class="close-btn" onclick="closeDetail()">×</button>
+  </div>
+  <div class="detail-body" id="dp-body"></div>
 </div>
 <div class="modal-overlay" id="add-modal">
 <div class="modal">
-  <div class="modal-title"><i class="ti ti-calendar-plus" aria-hidden="true" style="font-size:16px;vertical-align:-2px;margin-right:6px"></i>予約登録</div>
+  <div class="modal-title">予約登録</div>
   <div class="form-group"><label class="form-label">物件</label><select id="add-prop"></select></div>
   <div class="form-row">
     <div class="form-group"><label class="form-label">チェックイン</label><input type="date" id="add-in"></div>
     <div class="form-group"><label class="form-label">チェックアウト</label><input type="date" id="add-out"></div>
   </div>
-  <div class="form-group"><label class="form-label">清掃担当スタッフ</label><select id="add-staff"></select></div>
+  <div class="form-group"><label class="form-label">清掃担当</label><select id="add-staff"></select></div>
   <div class="form-group"><label class="form-label">宿泊者名</label><input type="text" id="add-guest" placeholder="山田 太郎"></div>
-  <div class="form-group"><label class="form-label">メモ</label><input type="text" id="add-note" placeholder="ペット可、アレルギーなど"></div>
-  <div style="font-size:12px;color:var(--gray-400);background:var(--gray-50);border-radius:6px;padding:8px;margin-top:4px">
-    <i class="ti ti-info-circle" aria-hidden="true" style="font-size:13px"></i> チェックアウト日に清掃タスクが自動生成されます
-  </div>
+  <div class="form-group"><label class="form-label">メモ</label><input type="text" id="add-note" placeholder="ペット可など"></div>
   <div class="modal-actions">
     <button class="btn-cancel" onclick="closeModal()">キャンセル</button>
     <button class="btn-save" onclick="addBooking()">登録する</button>
@@ -170,117 +139,130 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f1f3f4;color:var(--gray-9
 <script>
 const ICAL_URLS={'nel.shizuoka':'https://calendar.google.com/calendar/ical/b7c977bab349c38525963f73eb023db41e3df06492384122f85660b2ec030a9d%40group.calendar.google.com/private-3fdd6e18cf76815616b6d26ef78a1383/basic.ics','SAKURA HAUS':'https://calendar.google.com/calendar/ical/d4176b763462e0fbf40ac8e1d2d714dfbfc210936c73b8a4c9528126585d5ab6%40group.calendar.google.com/private-0f6ee0f56a6609ce4babd78a2c20c7b1/basic.ics','SAKUYA':'https://calendar.google.com/calendar/ical/ab28b96b37415ef5bd0e475e90c30e56b7a1e47d255cb44859dd212e69e5f4bb%40group.calendar.google.com/private-8ff64fcbce95425a735341748788eadb/basic.ics'};
 const PROP_COLORS={'nel.shizuoka':'#16a34a','SAKURA HAUS':'#e91e8c','SAKUYA':'#f59e0b'};
-const PROP_NAMES={'nel.shizuoka':'nel.shizuoka','SAKURA HAUS':'桜ハウス','SAKUYA':'SAKUYA'};
+const PROP_NAMES={'nel.shizuoka':'nel.','SAKURA HAUS':'桜ハウス','SAKUYA':'SAKUYA'};
 const CHECKLIST=['寝具・タオル交換','浴室・洗面台清掃','トイレ清掃','キッチン清掃','床掃除・モップ','ゴミ捨て','アメニティ補充','冷蔵庫確認','備品チェック','鍵の確認・補充'];
-const STAFF_LIST=[{id:1,name:'田中 美咲',color:'#16a34a'},{id:2,name:'鈴木 一郎',color:'#e91e8c'},{id:3,name:'佐藤 花子',color:'#f59e0b'},{id:4,name:'山本 健太',color:'#8430ce'},{id:5,name:'中村あかり',color:'#f09300'},{id:6,name:'高橋 誠',color:'#d93025'}];
+const STAFF_LIST=[{id:1,name:'田中 美咲'},{id:2,name:'鈴木 一郎'},{id:3,name:'佐藤 花子'},{id:4,name:'山本 健太'},{id:5,name:'中村あかり'},{id:6,name:'高橋 誠'}];
 let curYear=new Date().getFullYear(),curMonth=new Date().getMonth();
 const today=new Date();
-let selectedBookingId=null;
-let bookings=JSON.parse(localStorage.getItem('cleaningBookings')||'[]');
-let tasks=JSON.parse(localStorage.getItem('cleaningTasks')||'[]');
-let propVisible=JSON.parse(localStorage.getItem('propVisible')||'{"nel.shizuoka":true,"SAKURA HAUS":true,"SAKUYA":true}');
-function saveData(){localStorage.setItem('cleaningBookings',JSON.stringify(bookings));localStorage.setItem('cleaningTasks',JSON.stringify(tasks));localStorage.setItem('propVisible',JSON.stringify(propVisible));}
+const todayStr=fmtDate(today);
+let selectedId=null;
+let bookings=JSON.parse(localStorage.getItem('cb')||'[]');
+let tasks=JSON.parse(localStorage.getItem('ct')||'[]');
 function pad(n){return String(n).padStart(2,'0')}
-function dStr(y,m,d){return y+'-'+pad(m+1)+'-'+pad(d)}
-function getStaff(id){return STAFF_LIST.find(s=>s.id===id)||{name:'未割当',color:'#9aa0a6'}}
-function pName(key){return PROP_NAMES[key]||key}
-function renderSidebar(){
-  document.getElementById('property-list').innerHTML=Object.keys(ICAL_URLS).map(name=>{
-    const col=PROP_COLORS[name],vis=propVisible[name];
-    return `<div class="property-item" onclick="toggleProp('${name}')">
-      <div class="prop-dot" style="background:${col};${!vis?'opacity:.3':''}"></div>
-      <div class="prop-name" style="${!vis?'opacity:.4':''}">${pName(name)}</div>
-      <div class="prop-toggle" style="border-color:${col};background:${vis?col:'transparent'};color:${vis?'#fff':col}">
-        ${vis?'<i class="ti ti-check" style="font-size:9px" aria-hidden="true"></i>':''}
-      </div></div>`;
-  }).join('');
-}
-function toggleProp(name){propVisible[name]=!propVisible[name];saveData();renderSidebar();renderCalendar();}
+function fmtDate(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function addDays(ds,n){const d=new Date(ds);d.setDate(d.getDate()+n);return fmtDate(d)}
+function getStaff(id){return STAFF_LIST.find(s=>s.id===id)||{name:'未割当'}}
+function pName(k){return PROP_NAMES[k]||k}
+function pCol(k){return PROP_COLORS[k]||'#888'}
+function hexAlpha(hex,a){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgba(${r},${g},${b},${a})`}
+function saveData(){localStorage.setItem('cb',JSON.stringify(bookings));localStorage.setItem('ct',JSON.stringify(tasks));}
+function getWeekNum(d){const j=new Date(d.getFullYear(),0,1);return Math.ceil(((d-j)/86400000+j.getDay()+1)/7);}
 function renderCalendar(){
   const months=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
   document.getElementById('month-label').textContent=curYear+'年 '+months[curMonth];
-  const first=new Date(curYear,curMonth,1).getDay(),dim=new Date(curYear,curMonth+1,0).getDate(),prevDim=new Date(curYear,curMonth,0).getDate();
-  const cells=[];
-  for(let i=first-1;i>=0;i--)cells.push({d:prevDim-i,other:true,m:curMonth-1<0?11:curMonth-1,yr:curMonth-1<0?curYear-1:curYear});
-  for(let d=1;d<=dim;d++)cells.push({d,other:false,m:curMonth,yr:curYear});
-  while(cells.length%7!==0){const l=cells[cells.length-1];cells.push({d:l.d+1,other:true,m:curMonth+1>11?0:curMonth+1,yr:curMonth+1>11?curYear+1:curYear});}
-  document.getElementById('cal-grid').innerHTML=cells.map((cell,idx)=>{
-    const ds=dStr(cell.yr,cell.m,cell.d);
-    const isToday=!cell.other&&cell.d===today.getDate()&&curMonth===today.getMonth()&&curYear===today.getFullYear();
-    const dow=idx%7;
-    const numCls='day-num'+(isToday?' today':cell.other?' other':dow===0?' sun':dow===6?' sat':'');
-    const dayB=bookings.filter(b=>propVisible[b.property]&&(b.checkin===ds||b.checkout===ds||(ds>b.checkin&&ds<b.checkout)));
-    let evHtml='',count=0;
-    dayB.forEach(b=>{
-      const col=PROP_COLORS[b.property]||'#888',task=tasks.find(t=>t.bookingId===b.id),sn=pName(b.property).split('　')[0];
-      if(b.checkin===ds&&count<3){
-        evHtml+=`<div class="event-bar" style="background:${col}15;color:${col}99;border-left:2px solid ${col}55;font-size:10px" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-login" style="font-size:9px;flex-shrink:0" aria-hidden="true"></i> IN ${sn}</div>`;count++;
-      }
-      if(ds>b.checkin&&ds<b.checkout&&count<2){
-        evHtml+=`<div class="event-bar" style="background:${col}10;color:${col}66;border-left:1px solid ${col}33;font-size:10px" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-home" style="font-size:9px;flex-shrink:0" aria-hidden="true"></i> 滞在 ${sn}</div>`;count++;
-      }
-      if(b.checkout===ds&&count<3){
-        evHtml+=`<div class="event-bar" style="background:${col};color:#fff;font-weight:600" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-brush" style="font-size:9px;flex-shrink:0" aria-hidden="true"></i> 清掃 ${sn}</div>`;
-        if(task){const pct=Math.round(task.checks.filter(c=>c.done).length/task.checks.length*100);evHtml+=`<div class="cleaning-chip" style="border-color:${col};color:${col};background:${col}20;font-weight:500" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-checklist" style="font-size:9px" aria-hidden="true"></i> ${task.done?'✓完了':pct+'%'}</div>`;}
-        count++;
-      }
+  const firstDay=new Date(curYear,curMonth,1),lastDay=new Date(curYear,curMonth+1,0);
+  const startDow=firstDay.getDay();
+  const weeks=[];let week=[];
+  for(let i=startDow-1;i>=0;i--){const d=new Date(curYear,curMonth,-i);week.push({date:fmtDate(d),other:true});}
+  for(let d=1;d<=lastDay.getDate();d++){week.push({date:fmtDate(new Date(curYear,curMonth,d)),other:false});if(week.length===7){weeks.push(week);week=[];}}
+  if(week.length>0){while(week.length<7){week.push({date:addDays(week[week.length-1].date,1),other:true});}weeks.push(week);}
+  const body=document.getElementById('cal-body');body.innerHTML='';
+  weeks.forEach(wk=>{
+    const rowEl=document.createElement('div');rowEl.className='week-row';
+    const wnEl=document.createElement('div');wnEl.className='week-num';
+    wnEl.textContent='W'+getWeekNum(new Date(wk[0].date));rowEl.appendChild(wnEl);
+    wk.forEach((cell,di)=>{
+      const colEl=document.createElement('div');colEl.className='day-col';
+      const numEl=document.createElement('div');
+      const dayNum=parseInt(cell.date.split('-')[2]);
+      let nc='day-num';
+      if(cell.date===todayStr)nc+=' today';
+      else if(cell.other)nc+=' other';
+      else if(di===0)nc+=' sun';
+      else if(di===6)nc+=' sat';
+      numEl.className=nc;numEl.textContent=dayNum;colEl.appendChild(numEl);
+      const evDiv=document.createElement('div');evDiv.className='ev-container';
+      const ds=cell.date;
+      bookings.forEach(b=>{
+        const col=pCol(b.property),sn=pName(b.property);
+        if(b.checkin===ds){
+          const el=document.createElement('div');el.className='ev-bar';
+          el.style.cssText=`background:${hexAlpha(col,.25)};color:${col}`;
+          el.textContent=sn+'　当日イン';
+          el.onclick=e=>{e.stopPropagation();showDetail(b.id)};evDiv.appendChild(el);
+        }
+        if(ds>b.checkin&&ds<b.checkout){
+          const el=document.createElement('div');el.className='ev-bar';
+          el.style.cssText=`background:${hexAlpha(col,.12)};color:${col};opacity:.7`;
+          el.textContent=sn+'　連泊中';
+          el.onclick=e=>{e.stopPropagation();showDetail(b.id)};evDiv.appendChild(el);
+        }
+        if(b.checkout===ds){
+          const task=tasks.find(t=>t.bookingId===b.id);
+          const isDone=task&&task.done;
+          const el=document.createElement('div');el.className='ev-bar';
+          el.style.cssText=`background:${hexAlpha(col,.3)};color:${col}`;
+          el.textContent=sn+'　チェックアウト';
+          el.onclick=e=>{e.stopPropagation();showDetail(b.id)};evDiv.appendChild(el);
+          const cl=document.createElement('div');cl.className='ev-bar';
+          const pct=task?Math.round(task.checks.filter(c=>c.done).length/task.checks.length*100):0;
+          cl.style.cssText=isDone?'background:#e6f4ea;color:#16a34a;font-weight:600':`background:${col};color:#fff;font-weight:600`;
+          cl.textContent=isDone?'✓ 清掃完了':'🧹 清掃 '+(task?pct+'%':'');
+          cl.onclick=e=>{e.stopPropagation();showDetail(b.id)};evDiv.appendChild(cl);
+        }
+      });
+      colEl.appendChild(evDiv);colEl.onclick=()=>{
+        const dayB=bookings.filter(b=>b.checkin===ds||b.checkout===ds||(ds>b.checkin&&ds<b.checkout));
+        if(dayB.length>=1)showDetail(dayB[0].id);
+      };
+      rowEl.appendChild(colEl);
     });
-    return `<div class="cal-cell" onclick="clickCell('${ds}')"><div class="${numCls}">${cell.d}</div><div>${evHtml}</div></div>`;
-  }).join('');
+    body.appendChild(rowEl);
+  });
 }
-function clickCell(ds){const dayB=bookings.filter(b=>propVisible[b.property]&&(b.checkin===ds||b.checkout===ds||(ds>b.checkin&&ds<b.checkout)));if(dayB.length>=1)showDetail(dayB[0].id);}
 function showDetail(id){
-  selectedBookingId=id;
+  selectedId=id;
   const b=bookings.find(x=>x.id===id);if(!b)return;
-  const task=tasks.find(t=>t.bookingId===id),col=PROP_COLORS[b.property]||'#888',s=getStaff(b.staffId);
-  const panel=document.getElementById('detail-panel');panel.classList.remove('hidden');
-  let taskHtml='';
+  const task=tasks.find(t=>t.bookingId===id),col=pCol(b.property),s=getStaff(b.staffId);
+  document.getElementById('dp-title').innerHTML=`<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${col};margin-right:6px;vertical-align:middle"></span>${pName(b.property)}`;
+  let html=`<div class="d-section"><div class="d-label">予約情報</div>
+    <div class="d-row"><span class="d-key">宿泊者</span><span class="d-val">${b.guest||'未登録'}</span></div>
+    <div class="d-row"><span class="d-key">チェックイン</span><span class="d-val">${b.checkin}</span></div>
+    <div class="d-row"><span class="d-key">チェックアウト</span><span class="d-val">${b.checkout}</span></div>
+    <div class="d-row"><span class="d-key">清掃担当</span><span class="d-val">${s.name}</span></div>
+    ${b.note?`<div class="d-row"><span class="d-key">メモ</span><span class="d-val">${b.note}</span></div>`:''}
+    ${b.source==='gcal'?'<div><span class="badge-gcal">📅 Googleカレンダー</span></div>':''}
+  </div>`;
   if(task){
     const done=task.checks.filter(c=>c.done).length,pct=Math.round(done/task.checks.length*100);
-    taskHtml=`<div class="detail-section">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <div class="detail-section-label" style="margin-bottom:0">清掃チェックリスト</div>
-        <span class="badge ${task.done?'badge-green':'badge-amber'}">${task.done?'完了':'未完了'}</span>
-      </div>
-      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${col}"></div></div><div class="progress-text">${done}/${task.checks.length}</div></div>
-      <div>${task.checks.map((c,i)=>`<div class="checklist-item">
-        <div class="check-box${c.done?' checked':''}" style="${c.done?'background:'+col+';border-color:'+col:''}" onclick="toggleCheck(${id},${i})">
-          ${c.done?'<i class="ti ti-check" style="font-size:10px;color:#fff" aria-hidden="true"></i>':''}
-        </div><span class="check-label${c.done?' done':''}">${c.text}</span></div>`).join('')}</div>
-      ${task.done?'<div class="complete-banner"><i class="ti ti-check" aria-hidden="true"></i> 清掃完了済み</div>':`<button class="complete-btn" onclick="markDone(${id})"><i class="ti ti-check" aria-hidden="true"></i> 清掃完了にする</button>`}
+    html+=`<div class="d-section"><div class="d-label">清掃チェックリスト（${done}/${task.checks.length}）</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${col}"></div></div>
+      <div class="progress-text">${pct}%</div>
+      ${task.checks.map((c,i)=>`<div class="checklist-item" onclick="toggleCheck(${id},${i})">
+        <div class="check-box" style="${c.done?'background:'+col+';border-color:'+col+';color:#fff':''}">${c.done?'✓':''}</div>
+        <span class="check-text ${c.done?'done':''}">${c.text}</span>
+      </div>`).join('')}
+      ${task.done?'<div class="done-banner">✓ 清掃完了済み</div>':`<button class="complete-btn" onclick="markDone(${id})">清掃完了にする</button>`}
     </div>`;
   }
-  panel.innerHTML=`<div class="detail-header">
-    <div class="detail-title"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${col};margin-right:6px;vertical-align:middle"></span>${pName(b.property)}</div>
-    <button class="close-btn" onclick="closeDetail()" aria-label="閉じる"><i class="ti ti-x" style="font-size:14px" aria-hidden="true"></i></button>
-  </div>
-  <div class="detail-body">
-    <div class="detail-section">
-      <div class="detail-section-label">予約情報</div>
-      <div class="info-row"><span class="info-label">宿泊者</span><span class="info-val">${b.guest||'（未登録）'}</span></div>
-      <div class="info-row"><span class="info-label">チェックイン</span><span class="info-val">${b.checkin}</span></div>
-      <div class="info-row"><span class="info-label">チェックアウト</span><span class="info-val">${b.checkout}</span></div>
-      <div class="info-row"><span class="info-label">清掃担当</span><span class="info-val" style="display:flex;align-items:center;gap:6px"><span style="width:18px;height:18px;border-radius:50%;background:${s.color}22;color:${s.color};display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600">${s.name.charAt(0)}</span>${s.name}</span></div>
-      ${b.note?`<div class="info-row"><span class="info-label">メモ</span><span class="info-val" style="font-size:12px">${b.note}</span></div>`:''}
-      ${b.source==='gcal'?'<div style="margin-top:8px"><span class="badge badge-blue"><i class="ti ti-brand-google" style="font-size:10px" aria-hidden="true"></i> Googleカレンダーから取得</span></div>':''}
-    </div>${taskHtml}</div>`;
+  document.getElementById('dp-body').innerHTML=html;
+  document.getElementById('detail-panel').classList.add('open');
+  document.getElementById('detail-overlay').classList.add('open');
 }
 function toggleCheck(bookingId,idx){const task=tasks.find(t=>t.bookingId===bookingId);if(!task)return;task.checks[idx].done=!task.checks[idx].done;task.done=task.checks.every(c=>c.done);saveData();showDetail(bookingId);renderCalendar();}
 function markDone(bookingId){const task=tasks.find(t=>t.bookingId===bookingId);if(!task)return;task.done=true;task.checks.forEach(c=>c.done=true);saveData();showDetail(bookingId);renderCalendar();}
-function closeDetail(){document.getElementById('detail-panel').classList.add('hidden');selectedBookingId=null;}
+function closeDetail(){document.getElementById('detail-panel').classList.remove('open');document.getElementById('detail-overlay').classList.remove('open');selectedId=null;}
 function openAddModal(){
   document.getElementById('add-prop').innerHTML=Object.keys(ICAL_URLS).map(n=>`<option value="${n}">${pName(n)}</option>`).join('');
   document.getElementById('add-staff').innerHTML=STAFF_LIST.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
-  const td=today.toISOString().split('T')[0];
-  document.getElementById('add-in').value=td;document.getElementById('add-out').value=td;
+  document.getElementById('add-in').value=todayStr;document.getElementById('add-out').value=todayStr;
   document.getElementById('add-guest').value='';document.getElementById('add-note').value='';
   document.getElementById('add-modal').classList.add('open');
 }
 function closeModal(){document.getElementById('add-modal').classList.remove('open');}
 function addBooking(){
-  const property=document.getElementById('add-prop').value,checkin=document.getElementById('add-in').value;
-  const checkout=document.getElementById('add-out').value,staffId=parseInt(document.getElementById('add-staff').value);
-  const guest=document.getElementById('add-guest').value,note=document.getElementById('add-note').value;
+  const property=document.getElementById('add-prop').value,checkin=document.getElementById('add-in').value,checkout=document.getElementById('add-out').value;
+  const staffId=parseInt(document.getElementById('add-staff').value),guest=document.getElementById('add-guest').value,note=document.getElementById('add-note').value;
   if(!checkin||!checkout||checkout<=checkin){alert('日付を正しく入力してください');return;}
   const id=Date.now();
   bookings.push({id,property,checkin,checkout,staffId,guest,note,source:'manual'});
@@ -289,80 +271,76 @@ function addBooking(){
 }
 function changeMonth(d){curMonth+=d;if(curMonth>11){curMonth=0;curYear++;}if(curMonth<0){curMonth=11;curYear--;}renderCalendar();}
 function goToday(){curYear=today.getFullYear();curMonth=today.getMonth();renderCalendar();}
+document.getElementById('add-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 async function parseIcal(text,property){
   const rawLines=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
   const lines=[];
-  for(let rl of rawLines){
-    if((rl.startsWith(' ')||rl.startsWith('\t'))&&lines.length>0){lines[lines.length-1]+=rl.trimStart();}
-    else{lines.push(rl);}
-  }
-  const events=[];let current=null;
+  for(let rl of rawLines){if((rl.startsWith(' ')||rl.startsWith('\t'))&&lines.length>0)lines[lines.length-1]+=rl.trimStart();else lines.push(rl);}
+  const events=[];let cur=null;
   for(let line of lines){
-    if(line.startsWith('BEGIN:VEVENT')){current={};}
-    else if(line.startsWith('END:VEVENT')&&current){
-      if(current.dtstart&&current.dtend&&current.summary){
-        const parseDate=s=>{const d=s.replace(/T.*$/,'').replace(/-/g,'');return d.slice(0,4)+'-'+d.slice(4,6)+'-'+d.slice(6,8);};
-        const checkin=parseDate(current.dtstart);let checkout=parseDate(current.dtend);
-        if(checkout===checkin){const d=new Date(checkout);d.setDate(d.getDate()+1);checkout=dStr(d.getFullYear(),d.getMonth(),d.getDate());}
-        const summary=current.summary.replace(/\\,/g,',').replace(/\\n/g,' ').trim();
-        if(!summary.toLowerCase().includes('blocked')&&!summary.toLowerCase().includes('unavailable')){events.push({checkin,checkout,guest:summary,property});}
+    if(line.startsWith('BEGIN:VEVENT')){cur={};}
+    else if(line.startsWith('END:VEVENT')&&cur){
+      if(cur.dtstart&&cur.dtend&&cur.summary){
+        const pd=s=>{const d=s.replace(/T.*$/,'').replace(/-/g,'');return d.slice(0,4)+'-'+d.slice(4,6)+'-'+d.slice(6,8);};
+        const ci=pd(cur.dtstart);let co=pd(cur.dtend);
+        if(co===ci){const d=new Date(co);d.setDate(d.getDate()+1);co=fmtDate(d);}
+        const sm=cur.summary.replace(/\\,/g,',').replace(/\\n/g,' ').trim();
+        if(!sm.toLowerCase().includes('blocked')&&!sm.toLowerCase().includes('unavailable'))events.push({checkin:ci,checkout:co,guest:sm,property});
       }
-      current=null;
-    }else if(current){
-      if(line.startsWith('DTSTART'))current.dtstart=line.split(':').slice(1).join(':');
-      else if(line.startsWith('DTEND'))current.dtend=line.split(':').slice(1).join(':');
-      else if(line.startsWith('SUMMARY'))current.summary=line.split(':').slice(1).join(':');
+      cur=null;
+    }else if(cur){
+      if(line.startsWith('DTSTART'))cur.dtstart=line.split(':').slice(1).join(':');
+      else if(line.startsWith('DTEND'))cur.dtend=line.split(':').slice(1).join(':');
+      else if(line.startsWith('SUMMARY'))cur.summary=line.split(':').slice(1).join(':');
     }
   }
   return events;
 }
 async function fetchIcal(property,url){
-  const PROXIES=['https://corsproxy.io/?','https://api.allorigins.win/get?url='];
-  for(const proxy of PROXIES){
+  const proxies=['https://corsproxy.io/?','https://api.allorigins.win/get?url='];
+  for(const proxy of proxies){
     try{
       const res=await fetch(proxy+encodeURIComponent(url),{signal:AbortSignal.timeout(8000)});
       if(!res.ok)continue;
       let text;
-      if(proxy.includes('allorigins')){const json=await res.json();text=json.contents;}else{text=await res.text();}
+      if(proxy.includes('allorigins')){const j=await res.json();text=j.contents;}else text=await res.text();
       if(text&&text.includes('BEGIN:VCALENDAR'))return await parseIcal(text,property);
     }catch(e){continue;}
   }
   return[];
 }
 async function syncCalendars(silent=false){
-  const btn=document.getElementById('sync-btn'),statusEl=document.getElementById('sync-status');
+  const btn=document.getElementById('sync-btn'),st=document.getElementById('sync-status-text');
   btn.disabled=true;
-  if(!silent)statusEl.innerHTML='<i class="ti ti-refresh" style="font-size:14px;color:#1a73e8;animation:spin .8s linear infinite" aria-hidden="true"></i><span> 同期中...</span>';
-  let newCount=0,updatedCount=0;
+  if(!silent)st.innerHTML='<span class="spinner"></span> 同期中...';
   const defaultStaff={'nel.shizuoka':1,'SAKURA HAUS':2,'SAKUYA':3};
+  let newCount=0,removedCount=0;
   const results=await Promise.all(Object.entries(ICAL_URLS).map(([p,u])=>fetchIcal(p,u)));
   Object.keys(ICAL_URLS).forEach((property,i)=>{
     const events=results[i];
     events.forEach(ev=>{
-      const existing=bookings.find(b=>b.property===property&&b.checkin===ev.checkin&&b.checkout===ev.checkout&&b.source==='gcal');
-      if(!existing){const id=Date.now()+Math.random();bookings.push({id,property,checkin:ev.checkin,checkout:ev.checkout,staffId:defaultStaff[property]||1,guest:ev.guest,note:'',source:'gcal'});tasks.push({bookingId:id,done:false,checks:CHECKLIST.map(t=>({text:t,done:false}))});newCount++;}
+      const exists=bookings.find(b=>b.property===property&&b.checkin===ev.checkin&&b.checkout===ev.checkout&&b.source==='gcal');
+      if(!exists){const id=Date.now()+Math.random();bookings.push({id,property,checkin:ev.checkin,checkout:ev.checkout,staffId:defaultStaff[property]||1,guest:ev.guest,note:'',source:'gcal'});tasks.push({bookingId:id,done:false,checks:CHECKLIST.map(t=>({text:t,done:false}))});newCount++;}
     });
-    const gcalKeys=new Set(events.map(e=>e.property+'|'+e.checkin+'|'+e.checkout));
-    bookings.filter(b=>b.property===property&&b.source==='gcal'&&!gcalKeys.has(b.property+'|'+b.checkin+'|'+b.checkout)).forEach(b=>{bookings=bookings.filter(x=>x.id!==b.id);tasks=tasks.filter(t=>t.bookingId!==b.id);updatedCount++;});
+    const keys=new Set(events.map(e=>e.checkin+'|'+e.checkout));
+    bookings.filter(b=>b.property===property&&b.source==='gcal'&&!keys.has(b.checkin+'|'+b.checkout)).forEach(b=>{bookings=bookings.filter(x=>x.id!==b.id);tasks=tasks.filter(t=>t.bookingId!==b.id);removedCount++;});
   });
   saveData();btn.disabled=false;
-  const now=new Date(),timeStr=now.getHours()+':'+pad(now.getMinutes()),changed=newCount+updatedCount;
-  statusEl.innerHTML='<i class="ti ti-circle-check" style="font-size:14px;color:#0f9d58" aria-hidden="true"></i><span> 同期完了 '+timeStr+(changed>0?' ('+changed+'件更新)':'')+'</span>';
+  const now=new Date(),ts=now.getHours()+':'+pad(now.getMinutes()),changed=newCount+removedCount;
+  st.textContent='同期完了 '+ts+(changed>0?' ('+changed+'件更新)':'');
   localStorage.setItem('lastSync',now.toISOString());
-  renderCalendar();if(selectedBookingId)showDetail(selectedBookingId);
+  renderCalendar();if(selectedId)showDetail(selectedId);
 }
 function initApp(){
-  renderSidebar();renderCalendar();
-  const lastSync=localStorage.getItem('lastSync'),statusEl=document.getElementById('sync-status');
+  renderCalendar();
+  const lastSync=localStorage.getItem('lastSync'),st=document.getElementById('sync-status-text');
   if(lastSync){
     const mins=Math.round((Date.now()-new Date(lastSync).getTime())/60000);
-    const label=mins<1?'たった今':mins<60?mins+'分前':Math.round(mins/60)+'時間前';
-    statusEl.innerHTML='<i class="ti ti-circle-check" style="font-size:14px;color:#0f9d58" aria-hidden="true"></i><span> 前回同期: '+label+'</span>';
-    setTimeout(()=>syncCalendars(true),200);
-  }else{syncCalendars(false);}
+    st.textContent='前回同期: '+(mins<1?'たった今':mins<60?mins+'分前':Math.round(mins/60)+'時間前');
+    setTimeout(()=>syncCalendars(true),300);
+  }else syncCalendars(false);
   setInterval(()=>syncCalendars(true),5*60*1000);
 }
-document.getElementById('add-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 initApp();
 </script>
 </body>

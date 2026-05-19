@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--blue:#1a73e8;--blue-light:#e8f0fe;--blue-dark:#1557b0;--green:#0f9d58;--green-light:#e6f4ea;--amber:#f4511e;--amber-light:#fce8e6;--purple:#8430ce;--gray-50:#f8f9fa;--gray-100:#f1f3f4;--gray-200:#e8eaed;--gray-400:#9aa0a6;--gray-600:#5f6368;--gray-800:#3c4043;--gray-900:#202124;--border:1px solid #e8eaed;--radius:8px;}
+:root{--blue:#1a73e8;--blue-light:#e8f0fe;--blue-dark:#1557b0;--green:#0f9d58;--green-light:#e6f4ea;--amber:#f4511e;--amber-light:#fce8e6;--gray-50:#f8f9fa;--gray-100:#f1f3f4;--gray-200:#e8eaed;--gray-400:#9aa0a6;--gray-600:#5f6368;--gray-800:#3c4043;--gray-900:#202124;--border:1px solid #e8eaed;--radius:8px;}
 body{font-family:'Noto Sans JP',sans-serif;background:#f1f3f4;color:var(--gray-900);font-size:14px;min-height:100vh}
 .layout{display:flex;height:100vh;overflow:hidden}
 .sidebar{width:220px;background:#fff;border-right:var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
@@ -169,9 +169,10 @@ body{font-family:'Noto Sans JP',sans-serif;background:#f1f3f4;color:var(--gray-9
 </div>
 <script>
 const ICAL_URLS={'nel.shizuoka':'https://calendar.google.com/calendar/ical/b7c977bab349c38525963f73eb023db41e3df06492384122f85660b2ec030a9d%40group.calendar.google.com/private-3fdd6e18cf76815616b6d26ef78a1383/basic.ics','SAKURA HAUS':'https://calendar.google.com/calendar/ical/d4176b763462e0fbf40ac8e1d2d714dfbfc210936c73b8a4c9528126585d5ab6%40group.calendar.google.com/private-0f6ee0f56a6609ce4babd78a2c20c7b1/basic.ics','SAKUYA':'https://calendar.google.com/calendar/ical/ab28b96b37415ef5bd0e475e90c30e56b7a1e47d255cb44859dd212e69e5f4bb%40group.calendar.google.com/private-8ff64fcbce95425a735341748788eadb/basic.ics'};
-const PROP_COLORS={'nel.shizuoka':'#1a73e8','SAKURA HAUS':'#0f9d58','SAKUYA':'#f4511e'};
+const PROP_COLORS={'nel.shizuoka':'#16a34a','SAKURA HAUS':'#e91e8c','SAKUYA':'#f59e0b'};
+const PROP_NAMES={'nel.shizuoka':'nel.shizuoka','SAKURA HAUS':'桜ハウス','SAKUYA':'SAKUYA'};
 const CHECKLIST=['寝具・タオル交換','浴室・洗面台清掃','トイレ清掃','キッチン清掃','床掃除・モップ','ゴミ捨て','アメニティ補充','冷蔵庫確認','備品チェック','鍵の確認・補充'];
-const STAFF_LIST=[{id:1,name:'田中 美咲',color:'#1a73e8'},{id:2,name:'鈴木 一郎',color:'#0f9d58'},{id:3,name:'佐藤 花子',color:'#f4511e'},{id:4,name:'山本 健太',color:'#8430ce'},{id:5,name:'中村あかり',color:'#f09300'},{id:6,name:'高橋 誠',color:'#d93025'}];
+const STAFF_LIST=[{id:1,name:'田中 美咲',color:'#16a34a'},{id:2,name:'鈴木 一郎',color:'#e91e8c'},{id:3,name:'佐藤 花子',color:'#f59e0b'},{id:4,name:'山本 健太',color:'#8430ce'},{id:5,name:'中村あかり',color:'#f09300'},{id:6,name:'高橋 誠',color:'#d93025'}];
 let curYear=new Date().getFullYear(),curMonth=new Date().getMonth();
 const today=new Date();
 let selectedBookingId=null;
@@ -182,12 +183,13 @@ function saveData(){localStorage.setItem('cleaningBookings',JSON.stringify(booki
 function pad(n){return String(n).padStart(2,'0')}
 function dStr(y,m,d){return y+'-'+pad(m+1)+'-'+pad(d)}
 function getStaff(id){return STAFF_LIST.find(s=>s.id===id)||{name:'未割当',color:'#9aa0a6'}}
+function pName(key){return PROP_NAMES[key]||key}
 function renderSidebar(){
   document.getElementById('property-list').innerHTML=Object.keys(ICAL_URLS).map(name=>{
     const col=PROP_COLORS[name],vis=propVisible[name];
     return `<div class="property-item" onclick="toggleProp('${name}')">
       <div class="prop-dot" style="background:${col};${!vis?'opacity:.3':''}"></div>
-      <div class="prop-name" style="${!vis?'opacity:.4':''}">${name}</div>
+      <div class="prop-name" style="${!vis?'opacity:.4':''}">${pName(name)}</div>
       <div class="prop-toggle" style="border-color:${col};background:${vis?col:'transparent'};color:${vis?'#fff':col}">
         ${vis?'<i class="ti ti-check" style="font-size:9px" aria-hidden="true"></i>':''}
       </div></div>`;
@@ -210,15 +212,15 @@ function renderCalendar(){
     const dayB=bookings.filter(b=>propVisible[b.property]&&(b.checkin===ds||b.checkout===ds||(ds>b.checkin&&ds<b.checkout)));
     let evHtml='',count=0;
     dayB.forEach(b=>{
-      const col=PROP_COLORS[b.property]||'#888',task=tasks.find(t=>t.bookingId===b.id);
+      const col=PROP_COLORS[b.property]||'#888',task=tasks.find(t=>t.bookingId===b.id),sn=pName(b.property).split('　')[0];
       if(b.checkin===ds&&count<3){
-        evHtml+=`<div class="event-bar" style="background:${col}15;color:${col}99;border-left:2px solid ${col}55;font-size:10px" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-login" style="font-size:9px;flex-shrink:0" aria-hidden="true"></i> IN ${b.property.split(' ')[0]}</div>`;count++;
+        evHtml+=`<div class="event-bar" style="background:${col}15;color:${col}99;border-left:2px solid ${col}55;font-size:10px" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-login" style="font-size:9px;flex-shrink:0" aria-hidden="true"></i> IN ${sn}</div>`;count++;
       }
       if(ds>b.checkin&&ds<b.checkout&&count<2){
-        evHtml+=`<div class="event-bar" style="background:${col}10;color:${col}66;border-left:1px solid ${col}33;font-size:10px" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-home" style="font-size:9px;flex-shrink:0" aria-hidden="true"></i> 滞在 ${b.property.split(' ')[0]}</div>`;count++;
+        evHtml+=`<div class="event-bar" style="background:${col}10;color:${col}66;border-left:1px solid ${col}33;font-size:10px" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-home" style="font-size:9px;flex-shrink:0" aria-hidden="true"></i> 滞在 ${sn}</div>`;count++;
       }
       if(b.checkout===ds&&count<3){
-        evHtml+=`<div class="event-bar" style="background:${col};color:#fff;font-weight:600" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-brush" style="font-size:9px;flex-shrink:0" aria-hidden="true"></i> 清掃 ${b.property.split(' ')[0]}</div>`;
+        evHtml+=`<div class="event-bar" style="background:${col};color:#fff;font-weight:600" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-brush" style="font-size:9px;flex-shrink:0" aria-hidden="true"></i> 清掃 ${sn}</div>`;
         if(task){const pct=Math.round(task.checks.filter(c=>c.done).length/task.checks.length*100);evHtml+=`<div class="cleaning-chip" style="border-color:${col};color:${col};background:${col}20;font-weight:500" onclick="event.stopPropagation();showDetail(${b.id})"><i class="ti ti-checklist" style="font-size:9px" aria-hidden="true"></i> ${task.done?'✓完了':pct+'%'}</div>`;}
         count++;
       }
@@ -249,7 +251,7 @@ function showDetail(id){
     </div>`;
   }
   panel.innerHTML=`<div class="detail-header">
-    <div class="detail-title"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${col};margin-right:6px;vertical-align:middle"></span>${b.property}</div>
+    <div class="detail-title"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${col};margin-right:6px;vertical-align:middle"></span>${pName(b.property)}</div>
     <button class="close-btn" onclick="closeDetail()" aria-label="閉じる"><i class="ti ti-x" style="font-size:14px" aria-hidden="true"></i></button>
   </div>
   <div class="detail-body">
@@ -267,7 +269,7 @@ function toggleCheck(bookingId,idx){const task=tasks.find(t=>t.bookingId===booki
 function markDone(bookingId){const task=tasks.find(t=>t.bookingId===bookingId);if(!task)return;task.done=true;task.checks.forEach(c=>c.done=true);saveData();showDetail(bookingId);renderCalendar();}
 function closeDetail(){document.getElementById('detail-panel').classList.add('hidden');selectedBookingId=null;}
 function openAddModal(){
-  document.getElementById('add-prop').innerHTML=Object.keys(ICAL_URLS).map(n=>`<option value="${n}">${n}</option>`).join('');
+  document.getElementById('add-prop').innerHTML=Object.keys(ICAL_URLS).map(n=>`<option value="${n}">${pName(n)}</option>`).join('');
   document.getElementById('add-staff').innerHTML=STAFF_LIST.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
   const td=today.toISOString().split('T')[0];
   document.getElementById('add-in').value=td;document.getElementById('add-out').value=td;
@@ -288,7 +290,12 @@ function addBooking(){
 function changeMonth(d){curMonth+=d;if(curMonth>11){curMonth=0;curYear++;}if(curMonth<0){curMonth=11;curYear--;}renderCalendar();}
 function goToday(){curYear=today.getFullYear();curMonth=today.getMonth();renderCalendar();}
 async function parseIcal(text,property){
-  const lines=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
+  const rawLines=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
+  const lines=[];
+  for(let rl of rawLines){
+    if((rl.startsWith(' ')||rl.startsWith('\t'))&&lines.length>0){lines[lines.length-1]+=rl.trimStart();}
+    else{lines.push(rl);}
+  }
   const events=[];let current=null;
   for(let line of lines){
     if(line.startsWith('BEGIN:VEVENT')){current={};}

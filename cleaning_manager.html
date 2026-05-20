@@ -191,50 +191,42 @@ function render(){
       dc.appendChild(dn);drow.appendChild(dc);
     });
     block.appendChild(drow);
-    // 各物件行（固定順）
+    // 各物件の行（固定順）
     PROPS.forEach(prop=>{
       const prow=document.createElement('div');prow.className='prop-row';
       const weekStart=wDays[0].s,weekEnd=wDays[6].s;
-      const cells=wDays.map(()=>{
-        const pc=document.createElement('div');pc.className='prop-cell';
-        return pc;
-      });
+      const cells=wDays.map(()=>{const pc=document.createElement('div');pc.className='prop-cell';return pc;});
       cells.forEach(c=>prow.appendChild(c));
-      // この週に重なる予約
       BK.filter(b=>b.property===prop.key&&b.checkout>weekStart&&b.checkin<weekEnd).forEach(b=>{
         const tk=TK.find(t=>t.bookingId===b.id);
         const done=tk&&tk.done;
-        let barStart=-1,barEnd=-1;
-        wDays.forEach((cell,di)=>{
-          if(cell.s>b.checkin&&cell.s<=b.checkout){
-            if(barStart===-1)barStart=di;
-            barEnd=di;
-          }
-        });
-        if(barStart===-1)return;
-        const endsThisWeek=b.checkout<=weekEnd;
-        const startsThisWeek=addD(b.checkin,1)>=weekStart;
-        const bar=document.createElement('div');
-        bar.className='bar '+(startsThisWeek&&endsThisWeek?'alone':startsThisWeek?'start':endsThisWeek?'end':'mid');
-        // チェックアウトがこの週にある場合はcheckout色、なければstay色
-        if(endsThisWeek&&!done){
-          bar.style.background=prop.cout;bar.style.color=prop.ctxt;
-          const hasSameIn=BK.some(b2=>b2.property===prop.key&&b2.checkin===b.checkout&&b2.id!==b.id);
-          bar.textContent=hasSameIn?prop.name+'　当日チェックイン':prop.name;
-        }else if(done){
-          bar.style.background=prop.cout;bar.style.color=prop.ctxt;
-          bar.textContent='✓ '+prop.name;
-        }else{
-          bar.style.background=prop.stay;bar.style.color=prop.stxt;
-          bar.textContent=prop.name;
+        const hasSameIn=BK.some(b2=>b2.property===prop.key&&b2.checkin===b.checkout&&b2.id!==b.id);
+        function makeBar(startDi,endDi,bg,fg,text,isStart,isEnd){
+          const bar=document.createElement('div');
+          bar.className='bar '+(isStart&&isEnd?'alone':isStart?'start':isEnd?'end':'mid');
+          bar.style.background=bg;bar.style.color=fg;bar.textContent=text;
+          bar.onclick=e=>{e.stopPropagation();showD(b.id,'b')};
+          const span=endDi-startDi+1;
+          bar.style.left='1px';bar.style.width=`calc(${span*100}% + ${span-1}px - 2px)`;
+          bar.style.top='2px';bar.style.bottom='2px';
+          cells[startDi].appendChild(bar);
+          cells[startDi].style.overflow='visible';
         }
-        bar.onclick=e=>{e.stopPropagation();showD(b.id,'b')};
-        const span=barEnd-barStart+1;
-        bar.style.left='1px';
-        bar.style.width=`calc(${span*100}% + ${span-1}px - 2px)`;
-        bar.style.top='2px';bar.style.bottom='2px';
-        cells[barStart].appendChild(bar);
-        cells[barStart].style.overflow='visible';
+        // 連泊バー（チェックアウト日を除く滞在日）
+        let ss=-1,se=-1;
+        wDays.forEach((cell,di)=>{if(cell.s>b.checkin&&cell.s<b.checkout){if(ss===-1)ss=di;se=di;}});
+        if(ss!==-1){
+          const isStart=addD(b.checkin,1)>=weekStart;
+          const isEnd=addD(b.checkout,-1)<=weekEnd;
+          makeBar(ss,se,prop.stay,prop.stxt,prop.name,isStart,isEnd);
+        }
+        // チェックアウト日バー（この週にある場合のみ）
+        const coIdx=wDays.findIndex(cell=>cell.s===b.checkout);
+        if(coIdx!==-1){
+          const label=done?'✓ 清掃完了 '+prop.name:(hasSameIn?'🧹 '+prop.name+'　当日チェックイン':'🧹 '+prop.name);
+          const bg=done?'#43a047':prop.cout;
+          makeBar(coIdx,coIdx,bg,prop.ctxt,label,true,true);
+        }
       });
       block.appendChild(prow);
     });

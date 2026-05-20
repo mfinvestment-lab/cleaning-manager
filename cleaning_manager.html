@@ -26,22 +26,24 @@ body{font-family:'Noto Sans JP',sans-serif;background:#fff;height:100vh;display:
 .dow{text-align:center;padding:5px 0;font-size:11px;font-weight:600;color:#888}
 .dow:first-child{color:#c62828}
 .dow:last-child{color:#1565c0}
-.week-block{border-bottom:1px solid #e0e0e0}
+.week-block{border-bottom:1px solid #ddd}
 .date-row{display:grid;grid-template-columns:repeat(7,1fr)}
 .date-cell{border-right:1px solid #ebebeb;padding:2px 3px;min-height:22px}
 .date-cell:last-child{border-right:none}
-.dnum{font-size:11px;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;color:#555;font-weight:500}
+.dnum{font-size:11px;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;color:#555;font-weight:500;cursor:pointer}
 .dnum.today{background:#1a73e8;color:#fff}
 .dnum.sun{color:#c62828}
 .dnum.sat{color:#1565c0}
 .dnum.other{color:#ccc}
-.prop-row{display:grid;grid-template-columns:repeat(7,1fr);min-height:22px}
-.prop-cell{border-right:1px solid #ebebeb;position:relative;min-height:22px;cursor:pointer}
+.prop-row{display:grid;grid-template-columns:repeat(7,1fr);height:24px;position:relative}
+.prop-cell{border-right:1px solid #ebebeb;position:relative;height:24px}
 .prop-cell:last-child{border-right:none}
-.prop-cell:hover{filter:brightness(.96)}
-.ev{position:absolute;top:1px;bottom:1px;left:0;right:0;font-size:10px;padding:1px 5px;line-height:1.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;z-index:1}
-.ev.light{font-weight:400}
-.ev.dark{font-weight:600;color:#fff}
+.bar{position:absolute;top:2px;bottom:2px;font-size:10px;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;font-weight:500;padding:0 5px;z-index:2}
+.bar:hover{filter:brightness(.93)}
+.bar.alone{border-radius:4px}
+.bar.start{border-radius:4px 0 0 4px}
+.bar.end{border-radius:0 4px 4px 0}
+.bar.mid{border-radius:0}
 .spot-row{display:grid;grid-template-columns:repeat(7,1fr)}
 .spot-cell{border-right:1px solid #ebebeb}
 .spot-cell:last-child{border-right:none}
@@ -147,9 +149,9 @@ const URLS={
   'SAKURA HAUS':'https://calendar.google.com/calendar/ical/d4176b763462e0fbf40ac8e1d2d714dfbfc210936c73b8a4c9528126585d5ab6%40group.calendar.google.com/private-0f6ee0f56a6609ce4babd78a2c20c7b1/basic.ics'
 };
 const PROPS=[
-  {key:'nel.shizuoka', name:'nel.',     dark:'#795548', light:'rgba(121,85,72,.2)',   ltxt:'#5d4037'},
-  {key:'SAKUYA',       name:'SAKUYA',   dark:'#f9a825', light:'rgba(249,168,37,.25)', ltxt:'#e65100'},
-  {key:'SAKURA HAUS',  name:'桜ハウス', dark:'#e91e8c', light:'rgba(233,30,140,.2)',  ltxt:'#c2185b'}
+  {key:'nel.shizuoka', name:'nel.',     cout:'#2DE09A', stay:'#41B2FF', ctxt:'#fff', stxt:'#fff'},
+  {key:'SAKUYA',       name:'SAKUYA',   cout:'#FFAE19', stay:'#B384EC', ctxt:'#fff', stxt:'#fff'},
+  {key:'SAKURA HAUS',  name:'桜ハウス', cout:'#FF527B', stay:'#8E766C', ctxt:'#fff', stxt:'#fff'}
 ];
 const CL=['寝具・タオル交換','浴室・洗面台清掃','トイレ清掃','キッチン清掃','床掃除','ゴミ捨て','アメニティ補充','冷蔵庫確認','備品チェック','鍵確認'];
 let Y=new Date().getFullYear(),M=new Date().getMonth();
@@ -161,7 +163,7 @@ let SP=JSON.parse(localStorage.getItem('sp')||'[]');
 function pad(n){return String(n).padStart(2,'0')}
 function fmt(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
 function addD(s,n){const d=new Date(s);d.setDate(d.getDate()+n);return fmt(d)}
-function getProp(k){return PROPS.find(p=>p.key===k)||{name:k,dark:'#888',light:'rgba(0,0,0,.1)',ltxt:'#555'}}
+function getProp(k){return PROPS.find(p=>p.key===k)||PROPS[0]}
 function save(){localStorage.setItem('bk',JSON.stringify(BK));localStorage.setItem('tk',JSON.stringify(TK));localStorage.setItem('sp',JSON.stringify(SP))}
 function render(){
   const MN=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
@@ -189,35 +191,50 @@ function render(){
       dc.appendChild(dn);drow.appendChild(dc);
     });
     block.appendChild(drow);
-    // 物件行（固定順）
+    // 各物件行（固定順）
     PROPS.forEach(prop=>{
       const prow=document.createElement('div');prow.className='prop-row';
-      wDays.forEach((cell,di)=>{
-        const ds=cell.s;
+      const weekStart=wDays[0].s,weekEnd=wDays[6].s;
+      const cells=wDays.map(()=>{
         const pc=document.createElement('div');pc.className='prop-cell';
-        const b=BK.find(bk=>bk.property===prop.key&&ds>bk.checkin&&ds<=bk.checkout);
-        if(b){
-          const isCheckout=b.checkout===ds;
-          const tk=TK.find(t=>t.bookingId===b.id);
-          const done=tk&&tk.done;
-          const ev=document.createElement('div');
-          if(isCheckout){
-            ev.className='ev dark';
-            ev.style.background=done?'#388e3c':prop.dark;
-            ev.style.color='#fff';
-            const hasSameIn=BK.some(b2=>b2.property===prop.key&&b2.checkin===ds&&b2.id!==b.id);
-            ev.textContent=done?'✓ '+prop.name:(hasSameIn?prop.name+'　当日イン':prop.name);
-          }else{
-            ev.className='ev light';
-            ev.style.background=prop.light;
-            ev.style.color=prop.ltxt;
-            ev.textContent=prop.name;
+        return pc;
+      });
+      cells.forEach(c=>prow.appendChild(c));
+      // この週に重なる予約
+      BK.filter(b=>b.property===prop.key&&b.checkout>weekStart&&b.checkin<weekEnd).forEach(b=>{
+        const tk=TK.find(t=>t.bookingId===b.id);
+        const done=tk&&tk.done;
+        let barStart=-1,barEnd=-1;
+        wDays.forEach((cell,di)=>{
+          if(cell.s>b.checkin&&cell.s<=b.checkout){
+            if(barStart===-1)barStart=di;
+            barEnd=di;
           }
-          ev.onclick=e=>{e.stopPropagation();showD(b.id,'b')};
-          pc.appendChild(ev);
+        });
+        if(barStart===-1)return;
+        const endsThisWeek=b.checkout<=weekEnd;
+        const startsThisWeek=addD(b.checkin,1)>=weekStart;
+        const bar=document.createElement('div');
+        bar.className='bar '+(startsThisWeek&&endsThisWeek?'alone':startsThisWeek?'start':endsThisWeek?'end':'mid');
+        // チェックアウトがこの週にある場合はcheckout色、なければstay色
+        if(endsThisWeek&&!done){
+          bar.style.background=prop.cout;bar.style.color=prop.ctxt;
+          const hasSameIn=BK.some(b2=>b2.property===prop.key&&b2.checkin===b.checkout&&b2.id!==b.id);
+          bar.textContent=hasSameIn?prop.name+'　当日チェックイン':prop.name;
+        }else if(done){
+          bar.style.background=prop.cout;bar.style.color=prop.ctxt;
+          bar.textContent='✓ '+prop.name;
+        }else{
+          bar.style.background=prop.stay;bar.style.color=prop.stxt;
+          bar.textContent=prop.name;
         }
-        pc.onclick=()=>{if(b)showD(b.id,'b')};
-        prow.appendChild(pc);
+        bar.onclick=e=>{e.stopPropagation();showD(b.id,'b')};
+        const span=barEnd-barStart+1;
+        bar.style.left='1px';
+        bar.style.width=`calc(${span*100}% + ${span-1}px - 2px)`;
+        bar.style.top='2px';bar.style.bottom='2px';
+        cells[barStart].appendChild(bar);
+        cells[barStart].style.overflow='visible';
       });
       block.appendChild(prow);
     });
@@ -245,7 +262,7 @@ function showD(id,type){
   if(type==='b'){
     const b=BK.find(x=>x.id===id);if(!b)return;
     const prop=getProp(b.property),tk=TK.find(t=>t.bookingId===id);
-    document.getElementById('pdot').style.background=prop.dark;
+    document.getElementById('pdot').style.background=prop.cout;
     document.getElementById('ptitle').textContent=prop.name;
     const done=tk?tk.checks.filter(x=>x.done).length:0,total=tk?tk.checks.length:0;
     let h=`<div class="pr"><span class="pk">宿泊者</span><span class="pv">${b.guest||'未登録'}</span></div>
@@ -255,7 +272,7 @@ function showD(id,type){
       ${b.source==='gcal'?'<div style="margin-top:6px"><span style="font-size:10px;background:#e8f0fe;color:#1a73e8;padding:2px 8px;border-radius:20px">📅 Googleカレンダー</span></div>':''}`;
     if(tk){h+=`<div class="stl">清掃チェックリスト（${done}/${total}）</div>
       ${tk.checks.map((c,i)=>`<div class="ci" onclick="togCk(${id},${i})">
-        <div class="cb" style="${c.done?'background:'+prop.dark+';border-color:'+prop.dark:''}">${c.done?'✓':''}</div>
+        <div class="cb" style="${c.done?'background:'+prop.cout+';border-color:'+prop.cout:''}">${c.done?'✓':''}</div>
         <span class="ct ${c.done?'done':''}">${c.text}</span>
       </div>`).join('')}
       ${tk.done?'<div class="dtag">✓ 清掃完了済み</div>':`<button class="bdone" onclick="allDone(${id})">清掃完了にする</button>`}`;}

@@ -195,7 +195,7 @@ function render(){
       const weekStart=wDays[0].s,weekEnd=wDays[6].s;
       const cells=wDays.map(()=>{const pc=document.createElement('div');pc.className='prop-cell';return pc;});
       cells.forEach(c=>prow.appendChild(c));
-      BK.filter(b=>b.property===prop.key&&b.checkout>weekStart&&b.checkin<=weekEnd).forEach(b=>{
+      BK.filter(b=>b.property===prop.key&&b.checkout>weekStart&&b.checkin<weekEnd).forEach(b=>{
         const tk=TK.find(t=>t.bookingId===b.id);
         const done=tk&&tk.done;
         const hasSameIn=BK.some(b2=>b2.property===prop.key&&b2.checkin===b.checkout&&b2.id!==b.id);
@@ -210,12 +210,7 @@ function render(){
           cells[startDi].appendChild(bar);
           cells[startDi].style.overflow='visible';
         }
-        // チェックイン日バー
-        const ciIdx=wDays.findIndex(cell=>cell.s===b.checkin);
-        if(ciIdx!==-1){
-          makeBar(ciIdx,ciIdx,prop.stay,prop.stxt,prop.name+'　チェックイン',true,true);
-        }
-        // 連泊バー（チェックアウト日を除く滞在日）
+        // 連泊バー（チェックイン翌日〜チェックアウト前日）
         let ss=-1,se=-1;
         wDays.forEach((cell,di)=>{if(cell.s>b.checkin&&cell.s<b.checkout){if(ss===-1)ss=di;se=di;}});
         if(ss!==-1){
@@ -223,10 +218,11 @@ function render(){
           const isEnd=addD(b.checkout,-1)<=weekEnd;
           makeBar(ss,se,prop.stay,prop.stxt,prop.name+'　連泊中',isStart,isEnd);
         }
-        // チェックアウト日バー
+        // チェックイン日 → 表示なし
+        // チェックアウト日バー（清掃あり）
         const coIdx=wDays.findIndex(cell=>cell.s===b.checkout);
         if(coIdx!==-1){
-          const label=done?'✓ 清掃完了 '+prop.name:(hasSameIn?'🧹 '+prop.name+'　当日チェックイン':'🧹 '+prop.name);
+          const label=done?'✓ 清掃完了':(hasSameIn?'🧹 当日チェックイン':'🧹');
           const bg=done?'#43a047':prop.cout;
           makeBar(coIdx,coIdx,bg,prop.ctxt,label,true,true);
         }

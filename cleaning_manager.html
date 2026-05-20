@@ -136,10 +136,15 @@ body{font-family:'Noto Sans JP',sans-serif;background:#fff;height:100vh;display:
 </div>
 </div>
 <script>
-const URLS={'nel.shizuoka':'https://calendar.google.com/calendar/ical/b7c977bab349c38525963f73eb023db41e3df06492384122f85660b2ec030a9d%40group.calendar.google.com/private-3fdd6e18cf76815616b6d26ef78a1383/basic.ics','SAKURA HAUS':'https://calendar.google.com/calendar/ical/d4176b763462e0fbf40ac8e1d2d714dfbfc210936c73b8a4c9528126585d5ab6%40group.calendar.google.com/private-0f6ee0f56a6609ce4babd78a2c20c7b1/basic.ics','SAKUYA':'https://calendar.google.com/calendar/ical/ab28b96b37415ef5bd0e475e90c30e56b7a1e47d255cb44859dd212e69e5f4bb%40group.calendar.google.com/private-8ff64fcbce95425a735341748788eadb/basic.ics'};
-const DARK={'nel.shizuoka':'#1b5e20','SAKURA HAUS':'#880e4f','SAKUYA':'#e65100'};
-const LIGHT={'nel.shizuoka':'rgba(46,125,50,.18)','SAKURA HAUS':'rgba(136,14,79,.18)','SAKUYA':'rgba(230,81,0,.18)'};
-const LTXT={'nel.shizuoka':'#2e7d32','SAKURA HAUS':'#880e4f','SAKUYA':'#bf360c'};
+const URLS={
+  'nel.shizuoka':'https://calendar.google.com/calendar/ical/b7c977bab349c38525963f73eb023db41e3df06492384122f85660b2ec030a9d%40group.calendar.google.com/private-3fdd6e18cf76815616b6d26ef78a1383/basic.ics',
+  'SAKUYA':'https://calendar.google.com/calendar/ical/ab28b96b37415ef5bd0e475e90c30e56b7a1e47d255cb44859dd212e69e5f4bb%40group.calendar.google.com/private-8ff64fcbce95425a735341748788eadb/basic.ics',
+  'SAKURA HAUS':'https://calendar.google.com/calendar/ical/d4176b763462e0fbf40ac8e1d2d714dfbfc210936c73b8a4c9528126585d5ab6%40group.calendar.google.com/private-0f6ee0f56a6609ce4babd78a2c20c7b1/basic.ics'
+};
+const ORDER=['nel.shizuoka','SAKUYA','SAKURA HAUS'];
+const DARK={'nel.shizuoka':'#00695c','SAKURA HAUS':'#880e4f','SAKUYA':'#e65100'};
+const LIGHT={'nel.shizuoka':'rgba(0,121,107,.2)','SAKURA HAUS':'rgba(136,14,79,.18)','SAKUYA':'rgba(245,127,23,.22)'};
+const LTXT={'nel.shizuoka':'#00695c','SAKURA HAUS':'#880e4f','SAKUYA':'#bf360c'};
 const NM={'nel.shizuoka':'nel.','SAKURA HAUS':'桜ハウス','SAKUYA':'SAKUYA'};
 const CL=['寝具・タオル交換','浴室・洗面台清掃','トイレ清掃','キッチン清掃','床掃除','ゴミ捨て','アメニティ補充','冷蔵庫確認','備品チェック','鍵確認'];
 let Y=new Date().getFullYear(),M=new Date().getMonth();
@@ -156,6 +161,7 @@ function lk(k){return LIGHT[k]||'rgba(0,0,0,.1)'}
 function lt(k){return LTXT[k]||'#333'}
 function nm(k){return NM[k]||k}
 function save(){localStorage.setItem('bk',JSON.stringify(BK));localStorage.setItem('tk',JSON.stringify(TK));localStorage.setItem('sp',JSON.stringify(SP))}
+function sortBK(){return[...BK].sort((a,b)=>ORDER.indexOf(a.property)-ORDER.indexOf(b.property))}
 function render(){
   const MN=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
   document.getElementById('mth').textContent=Y+'年 '+MN[M];
@@ -180,15 +186,16 @@ function render(){
       dn.className=dc;dn.textContent=parseInt(ds.split('-')[2]);
       wrap.appendChild(dn);div.appendChild(wrap);
       const evs=document.createElement('div');evs.className='evs';
-      // 滞在中バー（薄い）
-      BK.filter(b=>ds>b.checkin&&ds<b.checkout).forEach(b=>{
+      const sorted=sortBK();
+      // 滞在中（薄い）
+      sorted.filter(b=>ds>b.checkin&&ds<b.checkout).forEach(b=>{
         const e=document.createElement('div');e.className='ev-stay';
         e.style.background=lk(b.property);e.style.color=lt(b.property);
         e.textContent=nm(b.property);
         e.onclick=ev=>{ev.stopPropagation();showD(b.id,'booking')};evs.appendChild(e);
       });
       // チェックアウト日（濃い）
-      BK.filter(b=>b.checkout===ds).forEach(b=>{
+      sorted.filter(b=>b.checkout===ds).forEach(b=>{
         const tk=TK.find(t=>t.bookingId===b.id),done=tk&&tk.done;
         const e=document.createElement('div');e.className='ev-checkout';
         e.style.background=done?'#388e3c':dk(b.property);
@@ -196,11 +203,12 @@ function render(){
         e.onclick=ev=>{ev.stopPropagation();showD(b.id,'booking')};evs.appendChild(e);
         // 同物件で同日チェックインがある場合のみ「当日イン」
         if(BK.some(b2=>b2.checkin===ds&&b2.property===b.property&&b2.id!==b.id)){
+          const b2=BK.find(x=>x.checkin===ds&&x.property===b.property&&x.id!==b.id);
           const e2=document.createElement('div');e2.className='ev-samein';
           e2.style.background=lk(b.property);e2.style.color=lt(b.property);
           e2.style.borderLeft='2px solid '+dk(b.property);
           e2.textContent=nm(b.property)+'　当日イン';
-          e2.onclick=ev=>{ev.stopPropagation();const b2=BK.find(x=>x.checkin===ds&&x.property===b.property&&x.id!==b.id);if(b2)showD(b2.id,'booking')};evs.appendChild(e2);
+          e2.onclick=ev=>{ev.stopPropagation();if(b2)showD(b2.id,'booking')};evs.appendChild(e2);
         }
       });
       // スポット
@@ -211,8 +219,8 @@ function render(){
       });
       div.appendChild(evs);
       div.onclick=()=>{
-        const db=[...BK.filter(b=>b.checkin===ds||b.checkout===ds||(ds>b.checkin&&ds<b.checkout)),...SP.filter(s=>s.date===ds)];
-        if(db.length){const isSpot=SP.find(s=>s.id===db[0].id);showD(db[0].id,isSpot?'spot':'booking');}
+        const db=[...sorted.filter(b=>b.checkin===ds||b.checkout===ds||(ds>b.checkin&&ds<b.checkout)),...SP.filter(s=>s.date===ds)];
+        if(db.length){const isSpot=!!SP.find(s=>s.id===db[0].id);showD(db[0].id,isSpot?'spot':'booking');}
       };
       row.appendChild(div);
     }
@@ -264,8 +272,8 @@ function switchTab(tab){
   document.getElementById('form-spot').style.display=tab==='spot'?'':'none';
 }
 function openAdd(tab){
-  document.getElementById('ap').innerHTML=Object.keys(URLS).map(k=>`<option value="${k}">${nm(k)}</option>`).join('');
-  document.getElementById('sp-prop').innerHTML='<option value="">（なし）</option>'+Object.keys(URLS).map(k=>`<option value="${k}">${nm(k)}</option>`).join('');
+  document.getElementById('ap').innerHTML=ORDER.map(k=>`<option value="${k}">${nm(k)}</option>`).join('');
+  document.getElementById('sp-prop').innerHTML='<option value="">（なし）</option>'+ORDER.map(k=>`<option value="${k}">${nm(k)}</option>`).join('');
   document.getElementById('ai').value=TD;document.getElementById('ao').value=TD;
   document.getElementById('ag').value='';document.getElementById('an').value='';
   document.getElementById('sp-title').value='';document.getElementById('sp-date').value=TD;document.getElementById('sp-note').value='';

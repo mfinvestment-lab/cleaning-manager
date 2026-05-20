@@ -177,7 +177,6 @@ function render(){
   for(let w=0;w<days.length/7;w++){
     const wDays=days.slice(w*7,(w+1)*7);
     const block=document.createElement('div');block.className='week-block';
-    // 日付行
     const drow=document.createElement('div');drow.className='date-row';
     wDays.forEach((cell,di)=>{
       const dc=document.createElement('div');dc.className='date-cell';
@@ -191,13 +190,12 @@ function render(){
       dc.appendChild(dn);drow.appendChild(dc);
     });
     block.appendChild(drow);
-    // 各物件の行（固定順）
     PROPS.forEach(prop=>{
       const prow=document.createElement('div');prow.className='prop-row';
       const weekStart=wDays[0].s,weekEnd=wDays[6].s;
       const cells=wDays.map(()=>{const pc=document.createElement('div');pc.className='prop-cell';return pc;});
       cells.forEach(c=>prow.appendChild(c));
-      BK.filter(b=>b.property===prop.key&&b.checkout>weekStart&&b.checkin<weekEnd).forEach(b=>{
+      BK.filter(b=>b.property===prop.key&&b.checkout>weekStart&&b.checkin<=weekEnd).forEach(b=>{
         const tk=TK.find(t=>t.bookingId===b.id);
         const done=tk&&tk.done;
         const hasSameIn=BK.some(b2=>b2.property===prop.key&&b2.checkin===b.checkout&&b2.id!==b.id);
@@ -212,15 +210,20 @@ function render(){
           cells[startDi].appendChild(bar);
           cells[startDi].style.overflow='visible';
         }
+        // チェックイン日バー
+        const ciIdx=wDays.findIndex(cell=>cell.s===b.checkin);
+        if(ciIdx!==-1){
+          makeBar(ciIdx,ciIdx,prop.stay,prop.stxt,prop.name+'　チェックイン',true,true);
+        }
         // 連泊バー（チェックアウト日を除く滞在日）
         let ss=-1,se=-1;
         wDays.forEach((cell,di)=>{if(cell.s>b.checkin&&cell.s<b.checkout){if(ss===-1)ss=di;se=di;}});
         if(ss!==-1){
           const isStart=addD(b.checkin,1)>=weekStart;
           const isEnd=addD(b.checkout,-1)<=weekEnd;
-          makeBar(ss,se,prop.stay,prop.stxt,prop.name,isStart,isEnd);
+          makeBar(ss,se,prop.stay,prop.stxt,prop.name+'　連泊中',isStart,isEnd);
         }
-        // チェックアウト日バー（この週にある場合のみ）
+        // チェックアウト日バー
         const coIdx=wDays.findIndex(cell=>cell.s===b.checkout);
         if(coIdx!==-1){
           const label=done?'✓ 清掃完了 '+prop.name:(hasSameIn?'🧹 '+prop.name+'　当日チェックイン':'🧹 '+prop.name);
@@ -230,7 +233,6 @@ function render(){
       });
       block.appendChild(prow);
     });
-    // スポット行
     const hasSpot=wDays.some(cell=>SP.some(s=>s.date===cell.s));
     if(hasSpot){
       const srow=document.createElement('div');srow.className='spot-row';
